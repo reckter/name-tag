@@ -7,7 +7,9 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"lint:fix": "next lint --fix && prettier . --write"
+		"lint:fix": "next lint --fix && prettier . --write",
+		"install-bin": "./build/install-bin.sh",
+		"postinstall": "pnpm run install-bin"
 	},
 	"dependencies": {
 		"@headlessui/react": "^1.7.17",
