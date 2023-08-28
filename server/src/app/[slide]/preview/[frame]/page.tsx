@@ -12,10 +12,11 @@ export default async function PreviewFrame({
 		`${baseUrl}/api/slide/${params.slide}/frame/${params.frame}/compact`,
 	)
 	const pixel = new Uint8Array(await response.arrayBuffer())
+	const pixelArray = Array.from(pixel)
 	const frameNumber = parseInt(params.frame)
 	return (
 		<main className="flex min-h-screen flex-col items-center justify-between p-24">
-			<Preview pixel={pixel} slide={params.slide} frame={frameNumber} />
+			<Preview pixel={pixelArray} slide={params.slide} frame={frameNumber} />
 		</main>
 	)
 }
