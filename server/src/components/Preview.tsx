@@ -9,6 +9,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { Canvas } from "canvas"
 
 export function Preview({
 	pixel,
@@ -23,7 +24,7 @@ export function Preview({
 	const ref = useRef<HTMLCanvasElement>(null)
 
 	const draw = useCallback(() => {
-		if (ref.current) drawFrameToCanvas(pixel, ref.current!)
+		if (ref.current) drawFrameToCanvas(pixel, ref.current! as unknown as Canvas)
 	}, [pixel])
 
 	useEffect(() => {
