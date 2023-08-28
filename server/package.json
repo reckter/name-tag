@@ -12,8 +12,8 @@
 	"dependencies": {
 		"@headlessui/react": "^1.7.17",
 		"@heroicons/react": "^2.0.18",
-		"@napi-rs/canvas": "^0.1.44",
 		"@opencreek/ext": "^2.4.0",
+		"@napi-rs/canvas": "0.1.30",
 		"@react-buddy/ide-toolbox-next": "^2.4.1",
 		"@types/node": "20.5.4",
 		"@types/react": "18.2.21",

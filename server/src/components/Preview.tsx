@@ -1,15 +1,10 @@
 "use client"
 
-import {
-	drawFrameToCanvas,
-	drawToString,
-	toPackedPixel,
-	unpackPixel,
-} from "@/src/services/drawFrame.client"
+import { drawFrameToCanvas } from "@/src/services/drawFrame.client"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Canvas } from "canvas"
+import type { Canvas } from "@napi-rs/canvas"
 
 export function Preview({
 	pixel,

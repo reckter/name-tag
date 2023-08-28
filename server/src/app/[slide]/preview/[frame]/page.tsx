@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Area, AreaContentType } from "@/src/types/area"
 import { drawFrame } from "@/src/services/drawFrame"
 import { Preview } from "@/src/components/Preview"

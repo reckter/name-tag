@@ -1,5 +1,4 @@
 import { SlideShow } from "@/src/types/slideShow"
-import { createCanvas, CanvasRenderingContext2D } from "canvas"
 import {
 	Area,
 	AreaContentPicture,
@@ -7,6 +6,7 @@ import {
 	AreaContentType,
 } from "@/src/types/area"
 import { chain } from "@opencreek/ext"
+import { createCanvas, SKRSContext2D } from "@napi-rs/canvas"
 
 const HEIGHT = 128
 const WIDTH = 269
@@ -37,11 +37,7 @@ export function drawFrame(
 // packs a pixel array into a packed pixel array
 // also flips x and y, because the canvas is axactly 128 high
 
-export function drawArea(
-	ctx: CanvasRenderingContext2D,
-	frameNumber: number,
-	area: Area,
-) {
+export function drawArea(ctx: SKRSContext2D, frameNumber: number, area: Area) {
 	// TODO not advancing every frame)
 	const advanceBy = Math.floor(frameNumber / area.advanceEveryXFrames)
 	const currentContent = area.content[advanceBy % area.content.length]
@@ -56,7 +52,7 @@ export function drawArea(
 }
 
 function drawAreaPicture(
-	ctx: CanvasRenderingContext2D,
+	ctx: SKRSContext2D,
 	areaContent: AreaContentPicture,
 	area: Area,
 ) {
@@ -74,7 +70,7 @@ function drawAreaPicture(
 }
 
 function drawAreaText(
-	ctx: CanvasRenderingContext2D,
+	ctx: SKRSContext2D,
 	areaContent: AreaContentText,
 	area: Area,
 ) {

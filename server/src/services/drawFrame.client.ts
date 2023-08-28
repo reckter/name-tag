@@ -1,5 +1,5 @@
-import type { Canvas } from "canvas"
 import { chain } from "@opencreek/ext"
+import type { Canvas } from "@napi-rs/canvas"
 
 const HEIGHT = 128
 const WIDTH = 269
