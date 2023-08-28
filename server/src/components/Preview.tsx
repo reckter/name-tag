@@ -1,6 +1,6 @@
 "use client"
 
-import { drawFrameToCanvas } from "@/src/services/drawFrame.client"
+import { drawFrameToCanvas, unpackPixel } from "@/src/services/drawFrame.client"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
@@ -11,7 +11,7 @@ export function Preview({
 	slide,
 	frame,
 }: {
-	pixel: ReadonlyArray<ReadonlyArray<boolean>>
+	pixel: ReadonlyArray<number>
 	slide: string
 	frame: number
 }) {
@@ -19,7 +19,9 @@ export function Preview({
 	const ref = useRef<HTMLCanvasElement>(null)
 
 	const draw = useCallback(() => {
-		if (ref.current) drawFrameToCanvas(pixel, ref.current! as unknown as Canvas)
+		const unpacked = unpackPixel(pixel)
+		if (ref.current)
+			drawFrameToCanvas(unpacked, ref.current! as unknown as Canvas)
 	}, [pixel])
 
 	useEffect(() => {
