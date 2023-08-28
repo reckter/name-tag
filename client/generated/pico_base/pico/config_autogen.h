@@ -4,8 +4,8 @@
 
 // based on PICO_CONFIG_HEADER_FILES:
 
-#include "/Users/reckter/projects/pico-sdk/src/boards/include/boards/pico.h"
+#include "/Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/boards/include/boards/pico.h"
 
 // based on PICO_RP2040_CONFIG_HEADER_FILES:
 
-#include "/Users/reckter/projects/pico-sdk/src/rp2_common/cmsis/include/cmsis/rename_exceptions.h"
+#include "/Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis/include/cmsis/rename_exceptions.h"

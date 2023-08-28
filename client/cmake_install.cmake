@@ -1,4 +1,4 @@
-# Install script for directory: /Users/reckter/projects/name-tag
+# Install script for directory: /Users/reckter/projects/name-tag/client
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,14 +39,14 @@ endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/." TYPE FILE FILES
-    "/Users/reckter/projects/name-tag/name-tag.uf2"
-    "/Users/reckter/projects/name-tag/README.md"
+    "/Users/reckter/projects/name-tag/client/name-tag.uf2"
+    "/Users/reckter/projects/name-tag/client/README.md"
     )
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/Users/reckter/projects/name-tag/pico-sdk/cmake_install.cmake")
+  include("/Users/reckter/projects/name-tag/client/pico-sdk/cmake_install.cmake")
 
 endif()
 
@@ -58,5 +58,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/reckter/projects/name-tag/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/reckter/projects/name-tag/client/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
