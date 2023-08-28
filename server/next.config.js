@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+	experimental: {},
+	webpack: (config, { isServer }) => {
+		config.externals["@napi-rs/canvas"] = "@napi-rs/canvas"
+		return config
+	},
+}
 // For building on vercel: https://github.com/Automattic/node-canvas/issues/1779
 if (
 	process.env.LD_LIBRARY_PATH == null ||
