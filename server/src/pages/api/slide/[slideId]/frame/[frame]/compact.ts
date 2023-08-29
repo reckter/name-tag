@@ -30,6 +30,22 @@ export default async function GET(
 		advanceEveryXFrames: 1,
 		content: [content, content2],
 	}
+	const countContent = {
+		id: "content",
+		type: AreaContentType.Text,
+		size: 20,
+		text: frameNumber.toString(),
+	}
+	const countText: Area = {
+		id: "count",
+		type: AreaContentType.Text,
+		x: 0,
+		y: 50,
+		width: 269,
+		height: 100,
+		advanceEveryXFrames: 1,
+		content: [countContent],
+	}
 	const contentBlackSquare = {
 		id: "content",
 		type: AreaContentType.Picture,
@@ -53,7 +69,7 @@ export default async function GET(
 		width: 100,
 		height: 100,
 		advanceEveryXFrames: 2,
-		content: [contentBlackSquare, contentBlackSquareLowerCorner],
+		content: [contentBlackSquare, contentBlackSquareLowerCorner, countText],
 	}
 	const slide = {
 		id: "slide",
