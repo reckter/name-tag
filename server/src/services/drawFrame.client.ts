@@ -1,8 +1,10 @@
 import { chain } from "@opencreek/ext"
 import type { Canvas } from "@napi-rs/canvas"
+import { pick } from "next/dist/lib/pick"
 
 export const HEIGHT = 128
 export const WIDTH = 296
+
 export function drawFrameToCanvas(
 	pixels: ReadonlyArray<ReadonlyArray<boolean>>,
 	canvas: Canvas,
@@ -35,10 +37,15 @@ export function drawToString(
 }
 
 const packingLength = 8
+
 export function toPackedPixel(
 	pixel: ReadonlyArray<ReadonlyArray<boolean>>,
 ): ReadonlyArray<number> {
-	return chain(pixel)
+	const rotated = new Array(WIDTH)
+		.fill(0)
+		.map((_, x) => new Array(HEIGHT).fill(0).map((_, y) => pixel[y][x]))
+
+	return chain(rotated)
 		.flatten()
 		.chunk(packingLength)
 		.map((chunk) =>
@@ -53,13 +60,18 @@ export function toPackedPixel(
 export function unpackPixel(
 	packedPixel: ReadonlyArray<number>,
 ): ReadonlyArray<ReadonlyArray<boolean>> {
-	return chain(packedPixel)
+	const orig = chain(packedPixel)
 		.map((packed) =>
 			new Array(packingLength)
 				.fill(0)
 				.map((_, i) => (packed & (1 << (packingLength - 1 - i))) > 0),
 		)
 		.flatten()
-		.chunk(WIDTH)
+		.chunk(HEIGHT)
 		.value()
+
+	const rotated = new Array(HEIGHT)
+		.fill(0)
+		.map((_, x) => new Array(WIDTH).fill(0).map((_, y) => orig[y][x]))
+	return rotated
 }

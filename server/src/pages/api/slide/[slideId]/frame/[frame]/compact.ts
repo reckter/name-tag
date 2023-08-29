@@ -34,7 +34,7 @@ export default async function GET(
 		id: "content",
 		type: AreaContentType.Text,
 		size: 20,
-		text: frameNumber.toString() + ": " + (new Date()).toISOString(),
+		text: frameNumber.toString() + ": " + new Date().toISOString(),
 	}
 	const countText: Area = {
 		id: "count",
