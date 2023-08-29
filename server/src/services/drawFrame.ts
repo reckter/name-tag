@@ -7,9 +7,7 @@ import {
 } from "@/src/types/area"
 import { chain } from "@opencreek/ext"
 import { createCanvas, SKRSContext2D } from "@napi-rs/canvas"
-
-const HEIGHT = 128
-const WIDTH = 269
+import { HEIGHT, WIDTH } from "@/src/services/drawFrame.client"
 
 export function drawFrame(
 	slideShow: SlideShow,

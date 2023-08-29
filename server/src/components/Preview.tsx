@@ -1,6 +1,11 @@
 "use client"
 
-import { drawFrameToCanvas, unpackPixel } from "@/src/services/drawFrame.client"
+import {
+	drawFrameToCanvas,
+	HEIGHT,
+	unpackPixel,
+	WIDTH,
+} from "@/src/services/drawFrame.client"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
@@ -50,7 +55,7 @@ export function Preview({
 					next
 				</Link>
 			</div>
-			<canvas ref={ref} />
+			<canvas ref={ref} width={WIDTH} height={HEIGHT} />
 		</div>
 	)
 }
