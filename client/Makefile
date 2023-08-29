@@ -383,6 +383,30 @@ Users/reckter/projects/pimoroni-pico/drivers/st7789/st7789.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/name-tag.dir/build.make CMakeFiles/name-tag.dir/Users/reckter/projects/pimoroni-pico/drivers/st7789/st7789.cpp.s
 .PHONY : Users/reckter/projects/pimoroni-pico/drivers/st7789/st7789.cpp.s
 
+Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.obj: Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.cpp.obj
+.PHONY : Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.obj
+
+# target to build an object file
+Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/name-tag.dir/build.make CMakeFiles/name-tag.dir/Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.cpp.obj
+.PHONY : Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.cpp.obj
+
+Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.i: Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.cpp.i
+.PHONY : Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.i
+
+# target to preprocess a source file
+Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/name-tag.dir/build.make CMakeFiles/name-tag.dir/Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.cpp.i
+.PHONY : Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.cpp.i
+
+Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.s: Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.cpp.s
+.PHONY : Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.s
+
+# target to generate assembly for a file
+Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/name-tag.dir/build.make CMakeFiles/name-tag.dir/Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.cpp.s
+.PHONY : Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.cpp.s
+
 Users/reckter/projects/pimoroni-pico/libraries/bitmap_fonts/bitmap_fonts.obj: Users/reckter/projects/pimoroni-pico/libraries/bitmap_fonts/bitmap_fonts.cpp.obj
 .PHONY : Users/reckter/projects/pimoroni-pico/libraries/bitmap_fonts/bitmap_fonts.obj
 
@@ -1943,6 +1967,9 @@ help:
 	@echo "... Users/reckter/projects/pimoroni-pico/drivers/st7789/st7789.obj"
 	@echo "... Users/reckter/projects/pimoroni-pico/drivers/st7789/st7789.i"
 	@echo "... Users/reckter/projects/pimoroni-pico/drivers/st7789/st7789.s"
+	@echo "... Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.obj"
+	@echo "... Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.i"
+	@echo "... Users/reckter/projects/pimoroni-pico/libraries/badger2040/badger2040.s"
 	@echo "... Users/reckter/projects/pimoroni-pico/libraries/bitmap_fonts/bitmap_fonts.obj"
 	@echo "... Users/reckter/projects/pimoroni-pico/libraries/bitmap_fonts/bitmap_fonts.i"
 	@echo "... Users/reckter/projects/pimoroni-pico/libraries/bitmap_fonts/bitmap_fonts.s"

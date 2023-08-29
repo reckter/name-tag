@@ -248,6 +248,18 @@ CPACK_SOURCE_7Z:BOOL=ON
 //Enable to build ZIP source packages
 CPACK_SOURCE_ZIP:BOOL=ON
 
+//The directory containing a CMake configuration file for CURL.
+CURL_DIR:PATH=CURL_DIR-NOTFOUND
+
+//Path to a file.
+CURL_INCLUDE_DIR:PATH=CURL_INCLUDE_DIR-NOTFOUND
+
+//Path to a library.
+CURL_LIBRARY_DEBUG:FILEPATH=CURL_LIBRARY_DEBUG-NOTFOUND
+
+//Path to a library.
+CURL_LIBRARY_RELEASE:FILEPATH=CURL_LIBRARY_RELEASE-NOTFOUND
+
 //Dot tool for use with Doxygen
 DOXYGEN_DOT_EXECUTABLE:FILEPATH=DOXYGEN_DOT_EXECUTABLE-NOTFOUND
 
@@ -335,6 +347,12 @@ PICO_STDIO_USB:BOOL=OFF
 //Path to the Pimoroni Pico libraries
 PIMORONI_PICO_PATH:PATH=/Users/reckter/projects/pimoroni-pico
 
+//Arguments to supply to pkg-config
+PKG_CONFIG_ARGN:STRING=
+
+//pkg-config executable
+PKG_CONFIG_EXECUTABLE:FILEPATH=/opt/homebrew/bin/pkg-config
+
 //Value Computed by CMake
 name-tag_BINARY_DIR:STATIC=/Users/reckter/projects/name-tag/client
 
@@ -355,6 +373,9 @@ pico_sdk_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
 pico_sdk_SOURCE_DIR:STATIC=/Users/reckter/projects/name-tag/client/_deps/pico_sdk-src
+
+//Path to a library.
+pkgcfg_lib_PC_CURL_curl:FILEPATH=pkgcfg_lib_PC_CURL_curl-NOTFOUND
 
 
 ########################
@@ -529,6 +550,14 @@ CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 CPACK_SOURCE_7Z-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CPACK_SOURCE_ZIP
 CPACK_SOURCE_ZIP-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CURL_DIR
+CURL_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CURL_INCLUDE_DIR
+CURL_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CURL_LIBRARY_DEBUG
+CURL_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CURL_LIBRARY_RELEASE
+CURL_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: DOXYGEN_DOT_EXECUTABLE
 DOXYGEN_DOT_EXECUTABLE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: DOXYGEN_EXECUTABLE
@@ -538,11 +567,46 @@ FAMILY_MCUS:INTERNAL=RP2040
 FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[/opt/homebrew/Frameworks/Python.framework/Versions/3.11/bin/python3.11][cfound components: Interpreter ][v3.11.4()]
 //ADVANCED property for variable: GIT_EXECUTABLE
 GIT_EXECUTABLE-ADVANCED:INTERNAL=1
+PC_CURL_CFLAGS:INTERNAL=
+PC_CURL_CFLAGS_I:INTERNAL=
+PC_CURL_CFLAGS_OTHER:INTERNAL=
+PC_CURL_FOUND:INTERNAL=1
+PC_CURL_INCLUDEDIR:INTERNAL=/Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk/usr/include
+PC_CURL_INCLUDE_DIRS:INTERNAL=
+PC_CURL_LDFLAGS:INTERNAL=-L/usr/lib;-lcurl
+PC_CURL_LDFLAGS_OTHER:INTERNAL=
+PC_CURL_LIBDIR:INTERNAL=/usr/lib
+PC_CURL_LIBRARIES:INTERNAL=curl
+PC_CURL_LIBRARY_DIRS:INTERNAL=/usr/lib
+PC_CURL_LIBS:INTERNAL=
+PC_CURL_LIBS_L:INTERNAL=
+PC_CURL_LIBS_OTHER:INTERNAL=
+PC_CURL_LIBS_PATHS:INTERNAL=
+PC_CURL_MODULE_NAME:INTERNAL=libcurl
+PC_CURL_PREFIX:INTERNAL=/Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk/usr
+PC_CURL_STATIC_CFLAGS:INTERNAL=
+PC_CURL_STATIC_CFLAGS_I:INTERNAL=
+PC_CURL_STATIC_CFLAGS_OTHER:INTERNAL=
+PC_CURL_STATIC_INCLUDE_DIRS:INTERNAL=
+PC_CURL_STATIC_LDFLAGS:INTERNAL=-L/usr/lib;-lcurl;-lldap;-lz
+PC_CURL_STATIC_LDFLAGS_OTHER:INTERNAL=
+PC_CURL_STATIC_LIBDIR:INTERNAL=
+PC_CURL_STATIC_LIBRARIES:INTERNAL=curl;ldap;z
+PC_CURL_STATIC_LIBRARY_DIRS:INTERNAL=/usr/lib
+PC_CURL_STATIC_LIBS:INTERNAL=
+PC_CURL_STATIC_LIBS_L:INTERNAL=
+PC_CURL_STATIC_LIBS_OTHER:INTERNAL=
+PC_CURL_STATIC_LIBS_PATHS:INTERNAL=
+PC_CURL_VERSION:INTERNAL=7.64.1
+PC_CURL_libcurl_INCLUDEDIR:INTERNAL=
+PC_CURL_libcurl_LIBDIR:INTERNAL=
+PC_CURL_libcurl_PREFIX:INTERNAL=
+PC_CURL_libcurl_VERSION:INTERNAL=
 PICO_BOOT_STAGE2_DIR:INTERNAL=/Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/boot_stage2
 PICO_CMAKE_PRELOAD_PLATFORM_DIR:INTERNAL=/Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/cmake/preload/platforms
 PICO_CMAKE_PRELOAD_PLATFORM_FILE:INTERNAL=/Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/cmake/preload/platforms/rp2040.cmake
 PICO_COMPILER_ASM:INTERNAL=/opt/homebrew/bin/arm-none-eabi-gcc
-PICO_DOXYGEN_EXCLUDE_PATHS:INTERNAL= /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs
+PICO_DOXYGEN_EXCLUDE_PATHS:INTERNAL= /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common/cmsis /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040/hardware_regs
 PICO_DOXYGEN_PATHS:INTERNAL= /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/common /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/lib/cyw43-driver/src /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2_common /Users/reckter/projects/name-tag/client/_deps/pico_sdk-src/src/rp2040
 PICO_NO_HARDWARE:INTERNAL=0
 PICO_ON_DEVICE:INTERNAL=1
@@ -550,6 +614,10 @@ PICO_PLATFORM_CMAKE_FILE:INTERNAL=/Users/reckter/projects/name-tag/client/_deps/
 //Enable build of SDK tests
 PICO_SDK_TESTS_ENABLED:INTERNAL=
 PICO_TOOLCHAIN_PATH:INTERNAL=
+//ADVANCED property for variable: PKG_CONFIG_ARGN
+PKG_CONFIG_ARGN-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: PKG_CONFIG_EXECUTABLE
+PKG_CONFIG_EXECUTABLE-ADVANCED:INTERNAL=1
 //Compiler reason failure
 _Python3_Compiler_REASON_FAILURE:INTERNAL=
 //Development reason failure
@@ -561,4 +629,9 @@ _Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;11;4;32;64;;;abi3;/opt/homebre
 _Python3_INTERPRETER_SIGNATURE:INTERNAL=91fa6b41055f536ea0963b4ef9ef5b99
 //NumPy reason failure
 _Python3_NumPy_REASON_FAILURE:INTERNAL=
+__pkg_config_arguments_PC_CURL:INTERNAL=QUIET;libcurl
+__pkg_config_checked_PC_CURL:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_PC_CURL_curl
+pkgcfg_lib_PC_CURL_curl-ADVANCED:INTERNAL=1
+prefix_result:INTERNAL=AsynchDNS;IPv6;Largefile;GSS-API;Kerberos;SPNEGO;MultiSSL;NTLM;NTLM_WB;SSL;libz;HTTP2;UnixSockets;HTTPS-proxy
 

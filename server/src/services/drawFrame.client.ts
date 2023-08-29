@@ -2,7 +2,7 @@ import { chain } from "@opencreek/ext"
 import type { Canvas } from "@napi-rs/canvas"
 
 const HEIGHT = 128
-const WIDTH = 269
+const WIDTH = 296
 export function drawFrameToCanvas(
 	pixels: ReadonlyArray<ReadonlyArray<boolean>>,
 	canvas: Canvas,
