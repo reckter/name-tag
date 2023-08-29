@@ -50,7 +50,7 @@ export function toPackedPixel(
 		.chunk(packingLength)
 		.map((chunk) =>
 			chunk.reduce(
-				(acc, bit, i) => acc | (bit ? 1 << (packingLength - 1 - i) : 0),
+				(acc, bit, i) => acc | (!bit ? 1 << (packingLength - 1 - i) : 0),
 				0,
 			),
 		)
@@ -64,7 +64,7 @@ export function unpackPixel(
 		.map((packed) =>
 			new Array(packingLength)
 				.fill(0)
-				.map((_, i) => (packed & (1 << (packingLength - 1 - i))) > 0),
+				.map((_, i) => (packed & (1 << (packingLength - 1 - i))) == 0),
 		)
 		.flatten()
 		.chunk(HEIGHT)
