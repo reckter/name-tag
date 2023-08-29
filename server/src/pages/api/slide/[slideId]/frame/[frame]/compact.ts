@@ -38,7 +38,6 @@ export default async function GET(
 	}
 	const countText: Area = {
 		id: "count",
-		type: AreaContentType.Text,
 		x: 0,
 		y: 50,
 		width: 269,
@@ -69,12 +68,12 @@ export default async function GET(
 		width: 100,
 		height: 100,
 		advanceEveryXFrames: 2,
-		content: [contentBlackSquare, contentBlackSquareLowerCorner, countText],
+		content: [contentBlackSquare, contentBlackSquareLowerCorner],
 	}
 	const slide = {
 		id: "slide",
 		name: "hello world",
-		areas: [areaText, areaImage],
+		areas: [areaText, areaImage, countText],
 	}
 	const pixel = drawFrame(slide, frameNumber)
 	const packed = toPackedPixel(pixel)
