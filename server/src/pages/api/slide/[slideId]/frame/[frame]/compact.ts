@@ -4,6 +4,10 @@ import { NextResponse } from "next/server"
 import { NextApiRequest, NextApiResponse } from "next"
 import { toPackedPixel } from "@/src/services/drawFrame.client"
 
+function random(max: number) {
+	return Math.floor(Math.random() * max)
+}
+
 export default async function GET(
 	req: NextApiRequest,
 	res: NextApiResponse<ReadonlyArray<number>>,
@@ -12,13 +16,13 @@ export default async function GET(
 	const content = {
 		id: "content",
 		type: AreaContentType.Text,
-		size: 20,
+		size: 17 + random(5),
 		text: "Hello World",
 	}
 	const content2 = {
 		id: "content",
 		type: AreaContentType.Text,
-		size: 20,
+		size: 17 + random(5),
 		text: "toki!",
 	}
 	const areaText: Area = {
@@ -33,22 +37,25 @@ export default async function GET(
 	const countContent = {
 		id: "content",
 		type: AreaContentType.Text,
-		size: 20,
+		size: 27 + random(5),
 		text: frameNumber.toString() + ": " + new Date().toISOString(),
 	}
 	const countText: Area = {
 		id: "count",
 		x: 0,
-		y: 50,
+		y: 50 + random(10),
 		width: 269,
 		height: 100,
 		advanceEveryXFrames: 1,
 		content: [countContent],
 	}
+	const sizeBlackSquare = 5 + random(20)
 	const contentBlackSquare = {
 		id: "content",
 		type: AreaContentType.Picture,
-		pixel: [...new Array(10).fill(new Array(10).fill(true))],
+		pixel: [
+			...new Array(sizeBlackSquare).fill(new Array(sizeBlackSquare).fill(true)),
+		],
 	}
 	const contentBlackSquareLowerCorner = {
 		id: "content",
@@ -57,14 +64,18 @@ export default async function GET(
 			...new Array(100)
 				.fill(true)
 				.map((_, x) =>
-					new Array(100).fill(true).map((_, y) => x > 50 && y > 50),
+					new Array(100)
+						.fill(true)
+						.map(
+							(_, y) => x > 100 - sizeBlackSquare && y > 100 - sizeBlackSquare,
+						),
 				),
 		],
 	}
 	const areaImage: Area = {
 		id: "area2",
-		x: 200,
-		y: 10,
+		x: 200 + random(40),
+		y: 10 + random(10),
 		width: 100,
 		height: 100,
 		advanceEveryXFrames: 2,
