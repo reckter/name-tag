@@ -167,7 +167,7 @@ while True:
             state["frame"] -= 1
             changed = True
 
-    if (display.pressed(badger2040.BUTTON_USER) and display.pressed(badger2040.BUTTON_B)):
+    if (display.pressed(badger2040.BUTTON_UP) and display.pressed(badger2040.BUTTON_B)):
         reset_screen()
 
     if display.pressed(badger2040.BUTTON_DOWN):
@@ -211,7 +211,7 @@ while True:
         badger_os.state_save("net_image", state)
         byte_save("screen", image)
         changed = False
-    sleep(dif / 2)
-    #badger2040.sleep_for(1)
-    #display.halt()
+    #sleep(dif / 2)
+    badger2040.sleep_for(1)
+    display.halt()
 
