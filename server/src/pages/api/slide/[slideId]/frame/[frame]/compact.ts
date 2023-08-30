@@ -27,8 +27,8 @@ export default async function GET(
 	}
 	const areaText: Area = {
 		id: "area",
-		x: 0,
-		y: 20,
+		x: random(30),
+		y: 16 + random(10),
 		width: 269,
 		height: 100,
 		advanceEveryXFrames: 1,
@@ -42,8 +42,8 @@ export default async function GET(
 	}
 	const countText: Area = {
 		id: "count",
-		x: 0,
-		y: 50 + random(10),
+		x: random(10),
+		y: 60 + random(10),
 		width: 269,
 		height: 100,
 		advanceEveryXFrames: 1,
@@ -68,7 +68,8 @@ export default async function GET(
 					new Array(100)
 						.fill(true)
 						.map(
-							(_, y) => x > 100 - sizeBigBlackSquare && y > 100 - sizeBigBlackSquare,
+							(_, y) =>
+								x > 100 - sizeBigBlackSquare && y > 100 - sizeBigBlackSquare,
 						),
 				),
 		],
