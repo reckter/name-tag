@@ -57,6 +57,7 @@ export default async function GET(
 			...new Array(sizeBlackSquare).fill(new Array(sizeBlackSquare).fill(true)),
 		],
 	}
+	const sizeBigBlackSquare = 30 + random(40)
 	const contentBlackSquareLowerCorner = {
 		id: "content",
 		type: AreaContentType.Picture,
@@ -67,7 +68,7 @@ export default async function GET(
 					new Array(100)
 						.fill(true)
 						.map(
-							(_, y) => x > 100 - sizeBlackSquare && y > 100 - sizeBlackSquare,
+							(_, y) => x > 100 - sizeBigBlackSquare && y > 100 - sizeBigBlackSquare,
 						),
 				),
 		],
