@@ -41,7 +41,7 @@ export default async function GET(
 		id: "content",
 		type: AreaContentType.Text,
 		size: 27 + random(5),
-		text: frameNumber.toString() + ": " + moment().format("mm-dd HH:mm:ss"),
+		text: frameNumber.toString() + ": " + moment().format("MM-DD HH:mm:ss"),
 	}
 	const countText: Area = {
 		id: "count",
