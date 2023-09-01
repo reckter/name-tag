@@ -81,7 +81,7 @@ function drawAreaText(
 	area: Area,
 	font?: string,
 ) {
-	ctx.font = `bold ${areaContent.size}px ${font ?? "Helvetica Neue"}`
+	ctx.font = `${areaContent.size}px ${font ?? "Pentapixel"}`
 	ctx.fillStyle = "black"
 	ctx.strokeText(areaContent.text, area.x, area.y, area.width)
 	ctx.fillText(areaContent.text, area.x, area.y, area.width)

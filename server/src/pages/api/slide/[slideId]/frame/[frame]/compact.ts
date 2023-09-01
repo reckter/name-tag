@@ -17,13 +17,13 @@ export default async function GET(
 	const content = {
 		id: "content",
 		type: AreaContentType.Text,
-		size: 17 + random(5),
+		size: 20 + random(5),
 		text: "Hello World",
 	}
 	const content2 = {
 		id: "content",
 		type: AreaContentType.Text,
-		size: 17 + random(5),
+		size: 20 + random(5),
 		text: "toki!",
 	}
 	const areaText: Area = {
