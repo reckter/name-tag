@@ -3,6 +3,7 @@ import { drawFrame } from "@/src/services/drawFrame"
 import { NextResponse } from "next/server"
 import { NextApiRequest, NextApiResponse } from "next"
 import { toPackedPixel } from "@/src/services/drawFrame.client"
+import moment from "moment"
 
 function random(max: number) {
 	return Math.floor(Math.random() * max)
@@ -19,7 +20,7 @@ export default async function GET(
 		type: AreaContentType.Text,
 		size: 21,
 		text: "Hello World",
-		font: "5x7 practical"
+		font: "5x7 practical",
 	}
 	const content2 = {
 		id: "content",
@@ -40,13 +41,13 @@ export default async function GET(
 		id: "content",
 		type: AreaContentType.Text,
 		size: 27 + random(5),
-		text: frameNumber.toString() + ": " + new Date().toISOString(),
+		text: frameNumber.toString() + ": " + moment().format("mm-dd HH:mm:ss"),
 	}
 	const countText: Area = {
 		id: "count",
 		x: random(10),
 		y: 60 + random(10),
-		width: 269,
+		width: 296,
 		height: 100,
 		advanceEveryXFrames: 1,
 		content: [countContent],

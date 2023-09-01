@@ -15,7 +15,6 @@ export function drawFrame(
 	frameNumber: number,
 	font?: string,
 ): ReadonlyArray<ReadonlyArray<boolean>> {
-
 	const canvas = createCanvas(WIDTH, HEIGHT)
 	const ctx = canvas.getContext("2d")
 	ctx.clearRect(0, 0, WIDTH, HEIGHT)
