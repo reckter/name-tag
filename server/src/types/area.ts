@@ -25,6 +25,7 @@ export type AreaContentPicture = AreaContent & {
 
 export type AreaContentText = AreaContent & {
 	type: AreaContentType.Text
+	font?: string
 	size: number
 	text: string
 }

@@ -17,8 +17,9 @@ export default async function GET(
 	const content = {
 		id: "content",
 		type: AreaContentType.Text,
-		size: 20 + random(5),
+		size: 21,
 		text: "Hello World",
+		font: "5x7 practical"
 	}
 	const content2 = {
 		id: "content",
