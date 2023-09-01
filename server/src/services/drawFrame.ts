@@ -6,6 +6,7 @@ import {
 	AreaContentType,
 } from "@/src/types/area"
 import { chain } from "@opencreek/ext"
+import "../server/install-fonts"
 import { createCanvas, GlobalFonts, SKRSContext2D } from "@napi-rs/canvas"
 import { HEIGHT, WIDTH } from "@/src/services/drawFrame.client"
 
@@ -14,6 +15,7 @@ export function drawFrame(
 	frameNumber: number,
 	font?: string,
 ): ReadonlyArray<ReadonlyArray<boolean>> {
+
 	const canvas = createCanvas(WIDTH, HEIGHT)
 	const ctx = canvas.getContext("2d")
 	ctx.clearRect(0, 0, WIDTH, HEIGHT)

@@ -6,9 +6,9 @@ const baseUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
 	: "http://localhost:3000"
 export default async function PreviewFrame({
-	params,
-	searchParams,
-}: {
+																						 params,
+																						 searchParams
+																					 }: {
 	params: { slide: string; frame: string }
 	searchParams: { font?: string }
 }) {
@@ -16,7 +16,7 @@ export default async function PreviewFrame({
 	const response = await fetch(
 		`${baseUrl}/api/slide/${params.slide}/frame/${params.frame}/compact?font=${
 			searchParams.font ?? "Arial"
-		}`,
+		}`
 	)
 	const pixel = new Uint8Array(await response.arrayBuffer())
 	const pixelArray = Array.from(pixel)
@@ -30,7 +30,7 @@ export default async function PreviewFrame({
 				frame={frameNumber}
 				font={searchParams.font}
 			/>
-			{((await fonts.json()) as Array<string>).map((font) => (
+			{((await fonts.json()) as Array<string>).sort().map((font) => (
 				<Link
 					key={font}
 					href={`/${params.slide}/preview/${frameNumber}?font=${font}`}
