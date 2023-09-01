@@ -79,26 +79,27 @@ def drawImage(content):
 #     print(x)
 #     print(y)
 
-
+net_counter = 1
 def net_status_handler(a,b,c):
-    print(b)
-    return
+    pass
+    #net_counter = net_counter + 1
+    #show_progress(net_counter, 127)
 
-def clear_progress(update = False):
+def clear_progress(update = False, y = 0):
     display.set_pen(15)
-    display.pixel_span(0, 0, 296)
+    display.pixel_span(0, y, 296)
     if update:
         display.set_update_speed(badger2040.UPDATE_TURBO)
-        display.partial_update(0, 5, 296, 0)
+        display.partial_update(0, y, 296, y)
 
 
-def show_progress(count):
-    clear_progress()
+def show_progress(count, y = 0):
+    clear_progress(y = y)
 
     # draw {count} many lines
     display.set_pen(0)
     for i in range(count):
-        display.pixel_span(i * 8 + 1, 0, 6)
+        display.pixel_span(i * 8 + 1, y, 6)
     display.set_update_speed(badger2040.UPDATE_TURBO)
     display.update()
     #display.partial_update(0, 5, count * 8, 7)
@@ -137,81 +138,86 @@ except:
 
 
 print("updating...")
-# Connects to the wireless network. Ensure you have entered your details in WIFI_CONFIG.py :).
-
 
 display.keepalive()
 last_changed = time()
 
 # Call halt in a loop, on battery this switches off power.
 # On USB, the app will exit when A+C is pressed because the launcher picks that up.
-while True:
-    display.keepalive()
-    changed = False
 
-    dif = time() - last_changed
-    #display.pixel_span(0,127, dif * 5)
-    #display.set_update_speed(badger2040.UPDATE_TURBO)
-    #display.update()
-    if time() - last_changed >= 60:
-        print(time())
-        changed = True
-        state["frame"] +=1
+try:
+    while True:
+        display.keepalive()
+        changed = False
 
-    if badger2040.woken_by_rtc():
-        state["frame"] += 1
-        changed = True
-
-    if display.pressed(badger2040.BUTTON_UP):
-        if state["frame"] > 0:
-            state["frame"] -= 1
+        dif = time() - last_changed
+        #display.pixel_span(0,127, dif * 5)
+        #display.set_update_speed(badger2040.UPDATE_TURBO)
+        #display.update()
+        if time() - last_changed >= 60:
+            print(time())
             changed = True
+            state["frame"] +=1
 
-    if (display.pressed(badger2040.BUTTON_UP) and display.pressed(badger2040.BUTTON_B)):
-        reset_screen()
-
-    if display.pressed(badger2040.BUTTON_DOWN):
-        if state["frame"] < 1000: #TODO
+        if badger2040.woken_by_rtc():
             state["frame"] += 1
             changed = True
 
+        if display.pressed(badger2040.BUTTON_UP):
+            if state["frame"] > 0:
+                state["frame"] -= 1
+                changed = True
 
-    if changed:
-        print("updating image")
-        show_progress(1)
-        if not display.isconnected():
-            try:
-                print("conecting...")
-                display.connect(
-                    status_handler=net_status_handler
-                )
-            except e:
-                print(e)
-                print("did not connect. sleeping...")
-                badger2040.sleep_for(1)
-                display.halt()
-                #If on usb, we need to skip to the top of the loop
-                continue
-        show_progress(2)
+        if (display.pressed(badger2040.BUTTON_UP) and display.pressed(badger2040.BUTTON_B)):
+            reset_screen()
 
-        last_changed = time()
-        print("getting image!")
-        image = getImage()
-        show_progress(3)
-        print("drawing")
+        if display.pressed(badger2040.BUTTON_DOWN):
+            if state["frame"] < 1000: #TODO
+                state["frame"] += 1
+                changed = True
 
-        drawImage(image)
-        #display.set_pen(15)
-        #display.display.rectangle(0,0,WIDTH,HEIGHT)
 
-        draw_battery_indicator()
-        print("updating screen")
-        display.set_update_speed(badger2040.UPDATE_NORMAL)
-        display.update()
-        badger_os.state_save("net_image", state)
-        byte_save("screen", image)
-        changed = False
-    #sleep(dif / 2)
+        if changed:
+            print("updating image")
+            show_progress(1)
+            print(str(display.isconnected()))
+            if not display.isconnected():
+                try:
+                    print("conecting...")
+                    net_status = 0
+                    display.connect(status_handler=net_status_handler)
+                    #display.connect()
+                except e:
+                    show_progress(2)
+                    print(e)
+                    print("did not connect. sleeping...")
+                    badger2040.sleep_for(1)
+                    display.halt()
+                    #If on usb, we need to skip to the top of the loop
+                    continue
+            show_progress(3)
+
+            last_changed = time()
+            print("getting image!")
+            image = getImage()
+            show_progress(4)
+            print("drawing")
+
+            drawImage(image)
+            #display.set_pen(15)
+            #display.display.rectangle(0,0,WIDTH,HEIGHT)
+
+            draw_battery_indicator()
+            print("updating screen")
+            display.set_update_speed(badger2040.UPDATE_NORMAL)
+            display.update()
+            badger_os.state_save("net_image", state)
+            byte_save("screen", image)
+            changed = False
+        #sleep(dif / 2)
+        badger2040.sleep_for(1)
+        display.halt()
+except:
+    print("halt")
     badger2040.sleep_for(1)
     display.halt()
-

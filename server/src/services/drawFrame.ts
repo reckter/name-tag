@@ -6,12 +6,13 @@ import {
 	AreaContentType,
 } from "@/src/types/area"
 import { chain } from "@opencreek/ext"
-import { createCanvas, SKRSContext2D } from "@napi-rs/canvas"
+import { createCanvas, GlobalFonts, SKRSContext2D } from "@napi-rs/canvas"
 import { HEIGHT, WIDTH } from "@/src/services/drawFrame.client"
 
 export function drawFrame(
 	slideShow: SlideShow,
 	frameNumber: number,
+	font?: string,
 ): ReadonlyArray<ReadonlyArray<boolean>> {
 	const canvas = createCanvas(WIDTH, HEIGHT)
 	const ctx = canvas.getContext("2d")
@@ -21,7 +22,7 @@ export function drawFrame(
 	ctx.fillStyle = "black"
 
 	slideShow.areas.forEach((area) => {
-		drawArea(ctx, frameNumber, area)
+		drawArea(ctx, frameNumber, area, font)
 	})
 	const imageData = ctx.getImageData(0, 0, WIDTH, HEIGHT)
 
@@ -35,7 +36,12 @@ export function drawFrame(
 // packs a pixel array into a packed pixel array
 // also flips x and y, because the canvas is axactly 128 high
 
-export function drawArea(ctx: SKRSContext2D, frameNumber: number, area: Area) {
+export function drawArea(
+	ctx: SKRSContext2D,
+	frameNumber: number,
+	area: Area,
+	font?: string,
+) {
 	// TODO not advancing every frame)
 	const advanceBy = Math.floor(frameNumber / area.advanceEveryXFrames)
 	const currentContent = area.content[advanceBy % area.content.length]
@@ -44,7 +50,7 @@ export function drawArea(ctx: SKRSContext2D, frameNumber: number, area: Area) {
 			drawAreaPicture(ctx, currentContent as AreaContentPicture, area)
 			break
 		case AreaContentType.Text:
-			drawAreaText(ctx, currentContent as AreaContentText, area)
+			drawAreaText(ctx, currentContent as AreaContentText, area, font)
 			break
 	}
 }
@@ -71,8 +77,9 @@ function drawAreaText(
 	ctx: SKRSContext2D,
 	areaContent: AreaContentText,
 	area: Area,
+	font?: string,
 ) {
-	ctx.font = `bold ${areaContent.size}px san-serif`
+	ctx.font = `bold ${areaContent.size}px ${font ?? "Helvetica Neue"}`
 	ctx.fillStyle = "black"
 	ctx.strokeText(areaContent.text, area.x, area.y, area.width)
 	ctx.fillText(areaContent.text, area.x, area.y, area.width)

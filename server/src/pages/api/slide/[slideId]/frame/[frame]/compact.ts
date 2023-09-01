@@ -13,6 +13,7 @@ export default async function GET(
 	res: NextApiResponse<ReadonlyArray<number>>,
 ) {
 	const frameNumber = parseInt(req.query.frame as string)
+	const font = req.query.font as string
 	const content = {
 		id: "content",
 		type: AreaContentType.Text,
@@ -88,7 +89,7 @@ export default async function GET(
 		name: "hello world",
 		areas: [areaText, areaImage, countText],
 	}
-	const pixel = drawFrame(slide, frameNumber)
+	const pixel = drawFrame(slide, frameNumber, font)
 	const packed = toPackedPixel(pixel)
 	const buffer = Buffer.from(packed)
 	res.write(buffer)
