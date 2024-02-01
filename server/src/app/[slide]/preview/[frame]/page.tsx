@@ -15,7 +15,7 @@ export default async function PreviewFrame({
 }) {
 	const fonts = await fetch(`${baseUrl}/api/fonts`)
 	const response = await fetch(
-		`${baseUrl}/api/slide/${params.slide}/frame/${params.frame}/compact?font=${
+		`${baseUrl}/api/slides/${params.slide}/frames/${params.frame}/compact?font=${
 			searchParams.font ?? "Arial"
 		}`,
 	)
