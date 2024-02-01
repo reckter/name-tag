@@ -21,9 +21,9 @@ export default async function GET(
     const db = mongoClient.db(MONGO_DB)
     const collection = db.collection("slides")
 
-    const slide = await collection.findOne({ id: slideId })
+    const slide = await collection.findOne<SlideShow>({ id: slideId })
 
-    if (!slide) {
+    if (slide == undefined) {
         console.log("no slide found")
         res.status(404).end()
         return
