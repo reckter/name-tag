@@ -68,10 +68,11 @@ function drawAreaPicture(
 			if (pixel) {
 				ctx.fillStyle = "black"
 				ctx.fillRect(x + area.x, y + area.y, 1, 1)
-			} else {
+			} else if (pixel === false) {
 				ctx.fillStyle = "white"
 				ctx.fillRect(x + area.x, y + area.y, 1, 1)
 			}
+			// else pixel is undefined, so we don't draw anything, transparency babyyyy
 		})
 	})
 }
