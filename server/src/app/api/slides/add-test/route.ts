@@ -2,6 +2,7 @@ import {MONGO_DB, mongoClient} from "@/src/services/mongo"
 import {Area, AreaContentType} from "@/src/types/area"
 import moment from "moment"
 import {NextResponse} from "next/server"
+import {v4 as uuid} from "uuid"
 
 function random(max: number) {
     return Math.floor(Math.random() * max)
@@ -46,7 +47,7 @@ export async function GET(request: Request) {
         width: 296,
         height: 100,
         advanceEveryXFrames: 1,
-        content: [...new Array(10000).map((_, it) => countContent(it))],
+        content: new Array(10000).fill(true).map((_, it) => countContent(it)),
     }
     const sizeBlackSquare = 5 + random(20)
     const contentBlackSquare = {
@@ -83,7 +84,7 @@ export async function GET(request: Request) {
         content: [contentBlackSquare, contentBlackSquareLowerCorner],
     }
     const slide = {
-        id: "slide",
+        id: uuid(),
         name: "hello world",
         areas: [areaText, areaImage, countText],
     }
@@ -92,6 +93,7 @@ export async function GET(request: Request) {
     const collection = db.collection("slides")
 
     const response = await collection.insertOne(slide)
+    const ret = await collection.findOne({id: slide.id})
 
-    return NextResponse.json(response)
+    return NextResponse.json(ret)
 }

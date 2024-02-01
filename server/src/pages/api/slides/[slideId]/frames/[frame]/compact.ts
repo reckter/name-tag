@@ -1,34 +1,41 @@
-import { Area, AreaContentType } from "@/src/types/area"
-import { drawFrame } from "@/src/services/drawFrame"
-import { NextApiRequest, NextApiResponse } from "next"
-import { toPackedPixel } from "@/src/services/drawFrame.client"
+import {Area, AreaContentType} from "@/src/types/area"
+import {drawFrame} from "@/src/services/drawFrame"
+import {NextApiRequest, NextApiResponse} from "next"
+import {toPackedPixel} from "@/src/services/drawFrame.client"
 import moment from "moment"
-import {MONGO_DB, mongoClient } from "@/src/services/mongo"
-import { SlideShow } from "@/src/types/slideShow"
+import {MONGO_DB, mongoClient} from "@/src/services/mongo"
+import {SlideShow} from "@/src/types/slideShow"
 
 
 export default async function GET(
-	req: NextApiRequest,
-	res: NextApiResponse<ReadonlyArray<number>>,
+    req: NextApiRequest,
+    res: NextApiResponse<ReadonlyArray<number>>,
 ) {
 
 
-	const frameNumber = parseInt(req.query.frame as string)
-	const slideId = req.query.slideId as string
-	await mongoClient.connect()
+    const frameNumber = parseInt(req.query.frame as string)
+    const slideId = req.query.slideId as string
+    console.log(`looking for frame ${frameNumber} of slide ${slideId}`)
+    await mongoClient.connect()
 
-	const db = mongoClient.db(MONGO_DB)
-	const collection = db.collection("slides")
+    const db = mongoClient.db(MONGO_DB)
+    const collection = db.collection("slides")
 
-	const slide = await collection.findOne<SlideShow>({ id: slideId})
+    const slide = await collection.findOne({ id: slideId })
 
-	if(!slide) {
-		return res.status(404)
-	}
+    if (!slide) {
+        console.log("no slide found")
+        res.status(404).end()
+        return
+    }
 
-	const pixel = drawFrame(slide, frameNumber)
-	const packed = toPackedPixel(pixel)
-	const buffer = Buffer.from(packed)
-	res.write(buffer)
-	res.status(200).end()
+    console.log("drawing frame")
+    const pixel = drawFrame(slide, frameNumber)
+    console.log("packing")
+    const packed = toPackedPixel(pixel)
+    console.log("to buffer")
+    const buffer = Buffer.from(packed)
+    console.log("out")
+    res.write(buffer)
+    res.status(200).end()
 }

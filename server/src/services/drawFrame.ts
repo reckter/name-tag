@@ -46,6 +46,8 @@ export function drawArea(
 	// TODO not advancing every frame)
 	const advanceBy = Math.floor(frameNumber / area.advanceEveryXFrames)
 	const currentContent = area.content[advanceBy % area.content.length]
+	console.dir(area.content)
+	console.dir({advanceBy, lentgh: area.content.length})
 	switch (currentContent.type) {
 		case AreaContentType.Picture:
 			drawAreaPicture(ctx, currentContent as AreaContentPicture, area)
