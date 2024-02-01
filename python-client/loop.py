@@ -4,6 +4,7 @@ import badger_os
 from badger2040 import WIDTH, HEIGHT
 from time import time
 from time import sleep
+import os
 
 
 state = {
@@ -14,26 +15,32 @@ state = {
     "fails": 0
 }
 
-badger_os.state_load("net_image", state)
+badger_os.state_load("loop", state)
 
 display = badger2040.Badger2040()
 
 def byte_save(name, data):
     try:
-        with open("/state/{}.bytes".format(name), "wb") as f:
+        with open("/state/bytes/{}.bytes".format(name), "wb") as f:
             f.write(data)
             f.flush()
-    except OSError:
-        import os
+    except OSError as e:
         try:
-            os.stat("/state")
+            os.stat("/state/bytes")
         except OSError:
-            os.mkdir("/state")
+            os.mkdir("/state/bytes")
             byte_save(name, data)
+
+def has_bytes(name):
+    try:
+        os.stat("/state/bytes/{}.bytes".format(name))
+        return True
+    except OSError:
+        return False
 
 def byte_load(name):
     try:
-        data = open("/state/{}.bytes".format(name), "rb").read()
+        data = open("/state/bytes/{}.bytes".format(name), "rb").read()
         print("loaded " + str(len(data)))
         return data
     except (OSError, ValueError) as e:
@@ -42,9 +49,34 @@ def byte_load(name):
         pass
     pass
 
-def getImage():
-    response = urequests.get("https://name-tag.reckt3r.rocks/api/slide/" + str(state["slide"]) + "/frame/" + str(state["frame"]) + "/compact")
+def get_image(slide, frame):
+    key = str(slide) + "-" + str(frame)
+    if (has_bytes(key)):
+        print("has bytes")
+        return byte_load(key)
+    connect_to_wifi()
+    response = urequests.get("https://name-tag.reckt3r.rocks/api/slide/" + str(slide) + "/frame/" + str(frame) + "/compact")
+    byte_save(key, response.content)
     return response.content
+
+def connect_to_wifi():
+    if not display.isconnected():
+        try:
+            print("conecting...")
+            net_status = 0
+            display.connect(status_handler=net_status_handler)
+            #display.connect()
+        except e:
+            show_progress(2)
+            print(e)
+            print("did not connect. sleeping...")
+
+            state["fails"] += 1
+            badger2040.sleep_for(1)
+            display.halt()
+            #If on usb, we need to skip to the top of the loop
+
+
 
 def display_bitmap(o_x, o_y, width, height, data):
     WIDTH, HEIGHT = display.display.get_bounds()
@@ -60,27 +92,10 @@ def display_bitmap(o_x, o_y, width, height, data):
         b = bytes(data[src:src + y_bytes])
         memoryview(display.display)[dst:dst + y_bytes] = b
 
-# TODO should use https://github.com/pimoroni/badger2040/issues/41#issuecomment-1669671337
+# from https://github.com/pimoroni/badger2040/issues/41#issuecomment-1669671337
 def drawImage(content):
     b = bytes(content)
     memoryview(display.display)[0:len(content)] = b
-#     x = 0
-#     y = 0
-#     print(len(content))
-#     for number in content:
-#         for offset in range(8):
-#             bit = number & (1 << 7 - offset)
-#             if bit > 0:
-#                 display.set_pen(0)
-#             else:
-#                 display.set_pen(15)
-#             display.pixel(x, y)
-#             x = x + 1
-#             if x >= WIDTH:
-#                 x = 0
-#                 y = y + 1
-#     print(x)
-#     print(y)
 
 net_counter = 1
 def net_status_handler(a,b,c):
@@ -139,7 +154,6 @@ except:
     print("could not change speed *shrug*")
 
 
-
 print("updating...")
 
 display.keepalive()
@@ -154,9 +168,6 @@ try:
         changed = False
 
         dif = time() - last_changed
-        #display.pixel_span(0,127, dif * 5)
-        #display.set_update_speed(badger2040.UPDATE_TURBO)
-        #display.update()
         if time() - last_changed >= 60:
             print(time())
             changed = True
@@ -164,6 +175,8 @@ try:
 
         if badger2040.woken_by_rtc():
             state["frame"] += 1
+            if (state["frame"] > 5):
+                state["frame"] = 0
             changed = True
 
         if display.pressed(badger2040.BUTTON_UP):
@@ -179,34 +192,16 @@ try:
                 state["frame"] += 1
                 changed = True
 
-
         if changed:
             state["tries"] += 1
             print("updating image")
             show_progress(1)
             print(str(display.isconnected()))
-            if not display.isconnected():
-                try:
-                    print("conecting...")
-                    net_status = 0
-                    display.connect(status_handler=net_status_handler)
-                    #display.connect()
-                except e:
-                    show_progress(2)
-                    print(e)
-                    print("did not connect. sleeping...")
-
-                    state["fails"] += 1
-                    badger2040.sleep_for(1)
-                    display.halt()
-                    #If on usb, we need to skip to the top of the loop
-                    continue
             show_progress(3)
 
             last_changed = time()
             print("getting image!")
-            image = getImage()
-            save_frame(image)
+            image = get_image(state["slide"], state["frame"])
             show_progress(4)
             print("drawing")
 
@@ -222,7 +217,7 @@ try:
 
             display.text(str(state["tries"]) + ": " + str(state["success"]) + " - " + str(state["fails"]), 0, 100)
             display.update()
-            badger_os.state_save("net_image", state)
+            badger_os.state_save("loop", state)
             byte_save("screen", image)
             changed = False
         #sleep(dif / 2)

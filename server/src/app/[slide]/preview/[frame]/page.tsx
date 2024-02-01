@@ -5,6 +5,7 @@ import Link from "next/link"
 const baseUrl = process.env.VERCEL_URL
 	? `https://${process.env.VERCEL_URL}`
 	: "http://localhost:3000"
+
 export default async function PreviewFrame({
 	params,
 	searchParams,

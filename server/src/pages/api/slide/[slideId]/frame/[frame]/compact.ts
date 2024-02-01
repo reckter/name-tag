@@ -1,6 +1,5 @@
 import { Area, AreaContentType } from "@/src/types/area"
 import { drawFrame } from "@/src/services/drawFrame"
-import { NextResponse } from "next/server"
 import { NextApiRequest, NextApiResponse } from "next"
 import { toPackedPixel } from "@/src/services/drawFrame.client"
 import moment from "moment"
