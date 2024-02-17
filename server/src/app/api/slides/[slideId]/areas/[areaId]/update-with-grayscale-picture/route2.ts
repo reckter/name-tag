@@ -20,6 +20,7 @@ export async function POST(
 	const png = new PNG()
 	const scaled = sharp(await file.arrayBuffer())
 		.resize(128, 128)
+		.withMetadata()
 		.greyscale()
 		.png()
 
