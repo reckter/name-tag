@@ -75,6 +75,7 @@ export default async function POST(
     const png = new PNG()
     const scaled = sharp(fileData)
         .resize(128, 128)
+        .withMetadata()
         .greyscale()
         .png()
 

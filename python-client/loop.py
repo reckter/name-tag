@@ -9,15 +9,16 @@ import os
 
 state = {
     "frame": 0,
-    "slide": 0,
+    "slide": "a52d839d-2e88-48f1-9355-a852b8f5111b",
     "tries": 0,
     "success": 0,
     "fails": 0,
-    "size": 0,
-    "chunkSize": 1
+    "size": 15,
+    "chunkSize": 15
 }
 
 badger_os.state_load("loop", state)
+print(state)
 
 display = badger2040.Badger2040()
 
@@ -57,7 +58,8 @@ def get_image(slide, frame, force = False):
         print("has bytes")
         return byte_load(key)
     connect_to_wifi()
-    response = urequests.get("https://name-tag.reckt3r.rocks/api/slide/" + str(slide) + "/frame/" + str(frame) + "/compact")
+    print("downloading image " + str(frame) + " from " + str(slide))
+    response = urequests.get("https://name-tag.reckt3r.rocks/api/slides/" + str(slide) + "/frames/" + str(frame) + "/compact")
     byte_save(key, response.content)
     return response.content
 
@@ -147,15 +149,15 @@ def reset_screen():
 def download_all(slide, max):
     print("downloading all")
     for i in range(max):
-        get_image(slide, i, TRUE)
+        get_image(slide, i, True)
 # ################
 # main
 # ################
 
 
 current = byte_load("screen")
-if current != None:
-    drawImage(current)
+#if current != None:
+ #   drawImage(current)
     #display.set_update_speed(badger2040.UPDATE_TURBO)
     #display.update()
 
@@ -193,6 +195,7 @@ try:
         if (display.pressed(badger2040.BUTTON_UP) and display.pressed(badger2040.BUTTON_B)):
             download_all(state["slide"], state["size"])
             reset_screen()
+            changed = True
 
         if display.pressed(badger2040.BUTTON_DOWN):
             state["frame"] += state["chunkSize"]
@@ -207,7 +210,7 @@ try:
             print("getting image!")
             display.set_update_speed(badger2040.UPDATE_TURBO)
             for i in range(state["chunkSize"]):
-                image = get_image(state["slide"], state["frame"])
+                image = get_image(state["slide"], state["frame"] + i)
 
                 drawImage(image)
                 display.update()
@@ -224,7 +227,9 @@ except Exception as e:
     print("halt")
 
     state["fails"] += 1
-    badger_os.state_save("net_image", state)
+    badger_os.state_save("loop", state)
     badger2040.sleep_for(1)
     display.halt()
+
+
 
