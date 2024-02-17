@@ -3,12 +3,12 @@ import {MONGO_DB, mongoClient} from "@/src/services/mongo"
 import {AreaContentPicture, AreaContentType} from "@/src/types/area"
 import {SlideShow} from "@/src/types/slideShow"
 import {chain} from "@opencreek/ext"
-import { NextApiRequest, NextApiResponse } from "next"
+import {NextApiRequest, NextApiResponse} from "next"
 import {NextResponse} from "next/server"
 import {PNG} from "pngjs"
 import sharp from "sharp"
 import formidable from "formidable"
-import { Writable } from "stream"
+import {Writable} from "stream"
 
 export const config = {
     api: {
@@ -28,7 +28,7 @@ const formidableConfig = {
 function formidablePromise(
     req: NextApiRequest,
     opts?: Parameters<typeof formidable>[0]
-): Promise<{fields: formidable.Fields; files: formidable.Files}> {
+): Promise<{ fields: formidable.Fields; files: formidable.Files }> {
     return new Promise((accept, reject) => {
         const form = formidable(opts);
 
@@ -105,7 +105,7 @@ export default async function POST(
         .find((it) => it.id === areaId)
     if (area == undefined) {
         res.status(404).json({error: "no area found"})
-        
+        return
     }
     area.content = instructions
         .map((it, index) => {

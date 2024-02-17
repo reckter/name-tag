@@ -37,6 +37,7 @@
 		"uuid": "^9.0.1"
 	},
 	"devDependencies": {
+		"@types/formidable": "^3.4.5",
 		"@types/uuid": "^9.0.8",
 		"prettier": "^3.0.2",
 		"ts-node": "^10.9.2"

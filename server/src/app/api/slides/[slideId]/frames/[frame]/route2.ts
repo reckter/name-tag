@@ -54,6 +54,7 @@ export async function GET(request: Request) {
 	const slide = {
 		id: "slide",
 		name: "hello world",
+		chunkSize: 1,
 		areas: [areaText, areaImage],
 	}
 	const pixel = drawFrame(slide, frameNumber)
