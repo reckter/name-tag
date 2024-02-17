@@ -2,8 +2,8 @@ import { Preview } from "@/src/components/Preview"
 import { GlobalFonts } from "@napi-rs/canvas"
 import Link from "next/link"
 
-const baseUrl = process.env.VERCEL_URL
-	? `https://${process.env.VERCEL_URL}`
+const baseUrl = process.env.BASE_URL
+	? `https://${process.env.BASE_URL}`
 	: "http://localhost:3000"
 
 export default async function PreviewFrame({
@@ -13,9 +13,9 @@ export default async function PreviewFrame({
 	params: { slide: string; frame: string }
 	searchParams: { font?: string }
 }) {
-	const fonts = await fetch(`/api/fonts`)
+	const fonts = await fetch(`${baseUrl}/api/fonts`)
 	const response = await fetch(
-		`/api/slides/${params.slide}/frames/${params.frame}/compact?font=${
+		`${baserl}/api/slides/${params.slide}/frames/${params.frame}/compact?font=${
 			searchParams.font ?? "Arial"
 		}`,
 	)
