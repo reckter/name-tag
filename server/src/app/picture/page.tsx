@@ -1,5 +1,6 @@
 "use client"
 import { useQueryState, queryTypes } from "next-usequerystate"
+import Link from "next/link"
 import { useState } from "react"
 
 export default function UploadPicture() {
@@ -42,6 +43,7 @@ export default function UploadPicture() {
 
 	return (
 		<main className="flex min-h-screen flex-col items-center justify-between p-24">
+			<Link href="/">Back</Link>
 			<form onSubmit={onSubmit}>
 				<input
 					type="file"

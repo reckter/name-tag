@@ -9,7 +9,7 @@ import os
 state = {
     "frame": 0,
     "slide": "a52d839d-2e88-48f1-9355-a852b8f5111b",
-    "availableSlides": ["a52d839d-2e88-48f1-9355-a852b8f5111b", "54cb9f5a-dce5-4b33-945a-88a774f874ad", "a52d839d-2e88-48f1-9355-a852b8f5111b"],
+    "availableSlides": ["a52d839d-2e88-48f1-9355-a852b8f5111b", "31697112-f46a-4677-b3e1-1c056430e3c6", "54cb9f5a-dce5-4b33-945a-88a774f874ad"],
     "tries": 0,
     "success": 0,
     "fails": 0,
@@ -216,9 +216,8 @@ try:
             state["slide"] = state["availableSlides"][2]
             changed = True
 
-        if (display.pressed(badger2040.BUTTON_UP) and display.pressed(badger2040.BUTTON_B)):
+        if (display.pressed(badger2040.BUTTON_UP)):
             download_all(state["slide"], state["size"])
-            reset_screen()
             changed = True
 
         if display.pressed(badger2040.BUTTON_DOWN):
