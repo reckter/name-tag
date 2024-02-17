@@ -1,9 +1,10 @@
 "use client"
-import { useState } from "react"
+import {useQueryState, queryTypes} from "next-usequerystate"
+import {useState} from "react"
 
 export default function UploadPicture() {
 
-    const slideId= "c53a8af4-f51b-49b5-935d-b2bfe064a82a"
+    const [slideId] = useQueryState<string>("slide", queryTypes.string.withDefault("c53a8af4-f51b-49b5-935d-b2bfe064a82a"))
     const [file, setFile] = useState<File>()
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
