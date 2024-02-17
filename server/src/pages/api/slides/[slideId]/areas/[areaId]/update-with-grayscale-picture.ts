@@ -97,18 +97,14 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 	})
 
 	const pixel = chain(data.data)
-		.chunk(data.width * 4)
-		.map((it) =>
-			chain(it)
-				.chunk(4)
-				.map((it) => it[0])
-				.value(),
-		)
+        .chunk(4)
+        .map((it) => it[0])
+		.chunk(data.width)
 		.value()
 
-	const rotated = new Array(area.height)
+	const rotated = new Array(area.width)
 		.fill(0)
-		.map((_, x) => new Array(area.width).fill(0).map((_, y) => pixel[y][x]))
+		.map((_, x) => new Array(area.height).fill(0).map((_, y) => pixel[y][x]))
 
 	const instructions = grayScaleToDrawInstructions(rotated)
 
