@@ -106,7 +106,11 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 		)
 		.value()
 
-	const instructions = grayScaleToDrawInstructions(pixel)
+	const rotated = new Array(area.height)
+		.fill(0)
+		.map((_, x) => new Array(area.width).fill(0).map((_, y) => pixel[y][x]))
+
+	const instructions = grayScaleToDrawInstructions(rotated)
 
 	area.content = instructions.map((it, index) => {
 		return {
