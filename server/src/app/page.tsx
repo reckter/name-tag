@@ -8,7 +8,16 @@ import Link from "next/link"
 export default function Home() {
 	return (
 		<main className="flex min-h-screen flex-col items-center justify-between p-24">
-			<Link href={`/0/preview/0`}>Test</Link>
+			<ul>
+			<li>
+
+				<Link href={`/picture?slide=a52d839d-2e88-48f1-9355-a852b8f5111b`}>with name</Link>
+			</li>
+				<li>
+
+					<Link href={`/picture?slide=31697112-f46a-4677-b3e1-1c056430e3c6`}>big picture</Link>
+				</li>
+			</ul>
 		</main>
 	)
 }
