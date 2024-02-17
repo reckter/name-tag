@@ -6,10 +6,12 @@ export default function UploadPicture() {
 
     const [slideId] = useQueryState<string>("slide", queryTypes.string.withDefault("c53a8af4-f51b-49b5-935d-b2bfe064a82a"))
     const [file, setFile] = useState<File>()
+    const [isLoading, setIsLoading] = useState(false)
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!file) return
+        setIsLoading(true)
 
         try {
             const data = new FormData()
@@ -24,6 +26,8 @@ export default function UploadPicture() {
         } catch (e: any) {
             // Handle errors here
             console.error(e)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -36,7 +40,14 @@ export default function UploadPicture() {
                     name="file"
                     onChange={(e) => setFile(e.target.files?.[0])}
                 />
-                <input type="submit" value="Upload"/>
+                <input type="submit" value="Upload"
+                       style={{
+                           padding: "12px",
+                           marginTop: "12px",
+                           border: "1px solid #eaeaea"
+                       }}
+                />
+                {isLoading && <p>Loading...</p>}
             </form>
         </main>
     )
