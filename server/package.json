@@ -16,24 +16,30 @@
 		"@opencreek/ext": "^2.4.0",
 		"@react-buddy/ide-toolbox-next": "^2.4.1",
 		"@types/node": "20.5.7",
+		"@types/pngjs": "^6.0.4",
 		"@types/react": "18.2.21",
 		"@types/react-dom": "18.2.7",
 		"autoprefixer": "10.4.15",
 		"eslint": "8.48.0",
 		"eslint-config-next": "13.4.19",
+		"formidable": "^3.5.1",
 		"moment": "^2.29.4",
 		"mongodb": "^6.3.0",
 		"next": "13.4.19",
+		"pngjs": "^7.0.0",
 		"postcss": "8.4.28",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
+		"sharp": "^0.33.2",
 		"tailwindcss": "3.3.3",
+		"tsx": "^4.7.1",
 		"typescript": "5.2.2",
 		"uuid": "^9.0.1"
 	},
 	"devDependencies": {
 		"@types/uuid": "^9.0.8",
-		"prettier": "^3.0.2"
+		"prettier": "^3.0.2",
+		"ts-node": "^10.9.2"
 	},
 	"prettier": {
 		"semi": false,

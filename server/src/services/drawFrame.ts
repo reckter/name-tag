@@ -101,3 +101,56 @@ function lcm(...arr: number[]): number {
 	const _lcm = (x: number, y: number) => (x * y) / gcd(x, y)
 	return [...arr].reduce((a, b) => _lcm(a, b))
 }
+
+export function grayScaleToDrawInstructions(pixel: ReadonlyArray<ReadonlyArray<number>>) :Array<Array<Array<boolean>>> {
+    const simple = pixel.map(row => row.map(toSimpleColor))
+
+    const drawCode = simple
+        .map(row => row.map(simpleColor16ToDrawArray))
+
+    const drawPictures = [...new Array(15)]
+        .map((_, x) => drawCode.map(row => row.map(it => it[x])))
+
+    return drawPictures
+}
+
+
+function toSimpleColor(grayScale: number): number {
+	// console.log(`pixel: ${pixel} => ${pixel >> 3}`)
+	return grayScale >> 4
+}
+
+function simpleColor16ToDrawArray(pixel: number): Array<boolean> {
+	const map = [
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0],
+
+		[0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+		[0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+
+		[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+		[0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+
+		[0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+		[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+	]
+
+	const inverted = 15 - pixel
+	if (pixel > 15) {
+		console.log(`invalid pixel! pixel: ${pixel} => inverse: ${inverted}`)
+	}
+	return map[inverted].map((it: number) => it == 1)
+
+}

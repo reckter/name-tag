@@ -16,77 +16,32 @@ export async function GET(request: Request) {
         id: "content",
         type: AreaContentType.Text,
         size: 21,
-        text: "Hello World",
+        text: "Hannes",
         font: "5x7 practical",
     }
-    const content2 = {
-        id: "content",
-        type: AreaContentType.Text,
-        size: 20 + random(5),
-        text: "toki!",
-    }
     const areaText: Area = {
-        id: "area",
-        x: random(30),
-        y: 16 + random(10),
-        width: 269,
-        height: 100,
+        id: "name",
+        x: 140,
+        y: 50,
+        width: 100,
+        height: 30,
         advanceEveryXFrames: 1,
-        content: [content, content2],
-    }
-    const countContent = (frameNumber: number) => ({
-        id: "content",
-        type: AreaContentType.Text,
-        size: 27 + random(5),
-        text: frameNumber.toString() + ": " + moment().format("MM-DD HH:mm:ss"),
-    })
-    const countText: Area = {
-        id: "count",
-        x: random(10),
-        y: 60 + random(10),
-        width: 296,
-        height: 100,
-        advanceEveryXFrames: 1,
-        content: new Array(10000).fill(true).map((_, it) => countContent(it)),
-    }
-    const sizeBlackSquare = 5 + random(20)
-    const contentBlackSquare = {
-        id: "content",
-        type: AreaContentType.Picture,
-        pixel: [
-            ...new Array(sizeBlackSquare).fill(new Array(sizeBlackSquare).fill(true)),
-        ],
-    }
-    const sizeBigBlackSquare = 30 + random(40)
-    const contentBlackSquareLowerCorner = {
-        id: "content",
-        type: AreaContentType.Picture,
-        pixel: [
-            ...new Array(100)
-                .fill(true)
-                .map((_, x) =>
-                    new Array(100)
-                        .fill(true)
-                        .map(
-                            (_, y) =>
-                                x > 100 - sizeBigBlackSquare && y > 100 - sizeBigBlackSquare,
-                        ),
-                ),
-        ],
+        content: [content],
     }
     const areaImage: Area = {
-        id: "area2",
-        x: 200 + random(40),
-        y: 10 + random(10),
+        id: "detail-picture",
+        x: 0,
+        y: 0,
         width: 100,
         height: 100,
-        advanceEveryXFrames: 2,
-        content: [contentBlackSquare, contentBlackSquareLowerCorner],
+        advanceEveryXFrames:1,
+        content: [],
     }
     const slide = {
         id: uuid(),
         name: "hello world",
-        areas: [areaText, areaImage, countText],
+        chunkSize: 15,
+        areas: [areaText, areaImage],
     }
 
     const db = mongoClient.db(MONGO_DB)

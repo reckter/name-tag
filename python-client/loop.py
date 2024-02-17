@@ -12,7 +12,9 @@ state = {
     "slide": 0,
     "tries": 0,
     "success": 0,
-    "fails": 0
+    "fails": 0,
+    "size": 0,
+    "chunkSize": 1
 }
 
 badger_os.state_load("loop", state)
@@ -49,9 +51,9 @@ def byte_load(name):
         pass
     pass
 
-def get_image(slide, frame):
+def get_image(slide, frame, force = False):
     key = str(slide) + "-" + str(frame)
-    if (has_bytes(key)):
+    if (not force and has_bytes(key)):
         print("has bytes")
         return byte_load(key)
     connect_to_wifi()
@@ -127,9 +129,14 @@ def draw_battery_indicator():
     print(state_of_charge)
     display.pixel_span(127,0, 269 * state_of_charge)
 
+def smooth_screen_update():
+    display.set_update_speed(badger2040.UPDATE_TURBO)
+    for i in range(20):
+        display.update()
+
 def reset_screen():
     display.set_update_speed(badger2040.UPDATE_NORMAL)
-    for i in range(20):
+    for i in range(2):
         display.set_pen(0)
         display.display.rectangle(0,0,WIDTH,HEIGHT)
         display.update()
@@ -137,6 +144,10 @@ def reset_screen():
         display.display.rectangle(0,0,WIDTH,HEIGHT)
         display.update()
 
+def download_all(slide, max):
+    print("downloading all")
+    for i in range(max):
+        get_image(slide, i, TRUE)
 # ################
 # main
 # ################
@@ -171,52 +182,37 @@ try:
         if time() - last_changed >= 60:
             print(time())
             changed = True
-            state["frame"] +=1
+            state["frame"] += state["chunkSize"]
 
         if badger2040.woken_by_rtc():
-            state["frame"] += 1
-            if (state["frame"] > 5):
+            state["frame"] += state["chunkSize"]
+            if (state["frame"] >= state["size"]):
                 state["frame"] = 0
             changed = True
 
-        if display.pressed(badger2040.BUTTON_UP):
-            if state["frame"] > 0:
-                state["frame"] -= 1
-                changed = True
-
         if (display.pressed(badger2040.BUTTON_UP) and display.pressed(badger2040.BUTTON_B)):
+            download_all(state["slide"], state["size"])
             reset_screen()
 
         if display.pressed(badger2040.BUTTON_DOWN):
-            if state["frame"] < 1000: #TODO
-                state["frame"] += 1
-                changed = True
+            state["frame"] += state["chunkSize"]
+            if (state["frame"] >= state["size"]):
+                state["frame"] = 0
+            changed = True
 
         if changed:
             state["tries"] += 1
             print("updating image")
-            show_progress(1)
-            print(str(display.isconnected()))
-            show_progress(3)
-
             last_changed = time()
             print("getting image!")
-            image = get_image(state["slide"], state["frame"])
-            show_progress(4)
-            print("drawing")
+            display.set_update_speed(badger2040.UPDATE_TURBO)
+            for i in range(state["chunkSize"]):
+                image = get_image(state["slide"], state["frame"])
 
-            drawImage(image)
-            #display.set_pen(15)
-            #display.display.rectangle(0,0,WIDTH,HEIGHT)
+                drawImage(image)
+                display.update()
 
-            draw_battery_indicator()
-            print("updating screen")
-            display.set_update_speed(badger2040.UPDATE_NORMAL)
 
-            state["success"] += 1
-
-            display.text(str(state["tries"]) + ": " + str(state["success"]) + " - " + str(state["fails"]), 0, 100)
-            display.update()
             badger_os.state_save("loop", state)
             byte_save("screen", image)
             changed = False
