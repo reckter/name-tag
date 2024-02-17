@@ -47,7 +47,7 @@ export function drawArea(
 	const advanceBy = Math.floor(frameNumber / area.advanceEveryXFrames)
 	const currentContent = area.content[advanceBy % area.content.length]
 	console.dir(area.content)
-	console.dir({advanceBy, lentgh: area.content.length})
+	console.dir({ advanceBy, lentgh: area.content.length })
 	switch (currentContent.type) {
 		case AreaContentType.Picture:
 			drawAreaPicture(ctx, currentContent as AreaContentPicture, area)
@@ -102,18 +102,19 @@ function lcm(...arr: number[]): number {
 	return [...arr].reduce((a, b) => _lcm(a, b))
 }
 
-export function grayScaleToDrawInstructions(pixel: ReadonlyArray<ReadonlyArray<number>>) :Array<Array<Array<boolean>>> {
-    const simple = pixel.map(row => row.map(toSimpleColor))
+export function grayScaleToDrawInstructions(
+	pixel: ReadonlyArray<ReadonlyArray<number>>,
+): Array<Array<Array<boolean>>> {
+	const simple = pixel.map((row) => row.map(toSimpleColor))
 
-    const drawCode = simple
-        .map(row => row.map(simpleColor16ToDrawArray))
+	const drawCode = simple.map((row) => row.map(simpleColor16ToDrawArray))
 
-    const drawPictures = [...new Array(15)]
-        .map((_, x) => drawCode.map(row => row.map(it => it[x])))
+	const drawPictures = [...new Array(15)].map((_, x) =>
+		drawCode.map((row) => row.map((it) => it[x])),
+	)
 
-    return drawPictures
+	return drawPictures
 }
-
 
 function toSimpleColor(grayScale: number): number {
 	// console.log(`pixel: ${pixel} => ${pixel >> 3}`)
@@ -152,5 +153,4 @@ function simpleColor16ToDrawArray(pixel: number): Array<boolean> {
 		console.log(`invalid pixel! pixel: ${pixel} => inverse: ${inverted}`)
 	}
 	return map[inverted].map((it: number) => it == 1)
-
 }

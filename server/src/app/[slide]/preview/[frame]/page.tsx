@@ -15,9 +15,9 @@ export default async function PreviewFrame({
 }) {
 	const fonts = await fetch(`${baseUrl}/api/fonts`)
 	const response = await fetch(
-		`${baseUrl}/api/slides/${params.slide}/frames/${params.frame}/compact?font=${
-			searchParams.font ?? "Arial"
-		}`,
+		`${baseUrl}/api/slides/${params.slide}/frames/${
+			params.frame
+		}/compact?font=${searchParams.font ?? "Arial"}`,
 	)
 	const pixel = new Uint8Array(await response.arrayBuffer())
 	const pixelArray = Array.from(pixel)

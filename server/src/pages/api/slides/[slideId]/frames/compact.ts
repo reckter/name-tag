@@ -10,9 +10,7 @@ export default async function GET(
 	req: NextApiRequest,
 	res: NextApiResponse<ReadonlyArray<number>>,
 ) {
-	const frameNumber = parseInt(req.query.frame as string)
 	const slideId = req.query.slideId as string
-	console.log(`looking for frame ${frameNumber} of slide ${slideId}`)
 	await mongoClient.connect()
 
 	const db = mongoClient.db(MONGO_DB)
@@ -26,10 +24,13 @@ export default async function GET(
 		return
 	}
 
+	const maxFrame = slide.areas
+		.map((it) => it.content.length)
+		.reduce((a, b) => Math.max(a, b), 0)
 	console.log("drawing frame")
-	const pixel = drawFrame(slide, frameNumber)
+	const pixel = [...new Array(maxFrame)].map((_, it) => drawFrame(slide, it))
 	console.log("packing")
-	const packed = toPackedPixel(pixel)
+	const packed = pixel.map(toPackedPixel).flat(1)
 	console.log("to buffer")
 	const buffer = Buffer.from(packed)
 	console.log("out")
