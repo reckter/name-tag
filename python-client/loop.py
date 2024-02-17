@@ -6,10 +6,10 @@ from time import time
 from time import sleep
 import os
 
-
 state = {
     "frame": 0,
     "slide": "a52d839d-2e88-48f1-9355-a852b8f5111b",
+    "availableSlides": ["a52d839d-2e88-48f1-9355-a852b8f5111b", "54cb9f5a-dce5-4b33-945a-88a774f874ad", "a52d839d-2e88-48f1-9355-a852b8f5111b"],
     "tries": 0,
     "success": 0,
     "fails": 0,
@@ -63,14 +63,17 @@ def get_image(slide, frame, force = False):
     byte_save(key, response.content)
     return response.content
 
-byte_size = 128 * 296 / 8
-def get_whole_slide_show(slide, max)
+byte_size = int(128 * 296 / 8)
+def get_whole_slide_show(slide, max):
     connect_to_wifi()
     print("downloading slide " + str(slide))
-    response = urequests.get("https://name-tag.reckt3r.rocks/api/slides/" + str(slide) + "/compact")
-    for i in range(max):
-        key = str(slide) + "-" + str(frame)
-        byte_save(key, response.content[i * byte_size: (i+1) * byte_size])
+    response = urequests.get("https://name-tag.reckt3r.rocks/api/slides/" + str(slide) + "/frames/compact")
+    print(len(response.content))
+    byte_save(str(slide), response.content)
+    #for i in range(max):
+    #    print("saving " + str(i))
+    #    key = str(slide) + "-" + str(i)
+    #    byte_save(key, response.content[i * byte_size: (i + 1) * byte_size])
 
 def connect_to_wifi():
     if not display.isconnected():
@@ -202,6 +205,17 @@ try:
                 state["frame"] = 0
             changed = True
 
+        if display.pressed(badger2040.BUTTON_A):
+            state["slide"] = state["availableSlides"][0]
+            changed = True
+        if display.pressed(badger2040.BUTTON_B):
+            state["slide"] = state["availableSlides"][1]
+            changed = True
+
+        if display.pressed(badger2040.BUTTON_C):
+            state["slide"] = state["availableSlides"][2]
+            changed = True
+
         if (display.pressed(badger2040.BUTTON_UP) and display.pressed(badger2040.BUTTON_B)):
             download_all(state["slide"], state["size"])
             reset_screen()
@@ -219,15 +233,16 @@ try:
             last_changed = time()
             print("getting image!")
             display.set_update_speed(badger2040.UPDATE_TURBO)
+            all_bytes = byte_load(str(state["slide"]))
             for i in range(state["chunkSize"]):
-                image = get_image(state["slide"], state["frame"] + i)
+                #image = get_image(state["slide"], state["frame"] + i)
 
-                drawImage(image)
+                drawImage(all_bytes[i * byte_size: (i +1) * byte_size])
                 display.update()
 
 
             badger_os.state_save("loop", state)
-            byte_save("screen", image)
+            #byte_save("screen", image)
             changed = False
         #sleep(dif / 2)
         badger2040.sleep_for(10)

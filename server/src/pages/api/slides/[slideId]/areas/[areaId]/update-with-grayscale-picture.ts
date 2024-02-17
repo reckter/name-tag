@@ -70,7 +70,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 	const png = new PNG()
 	const scaled = sharp(fileData)
 		.resize(128, 128)
-		.withMetadata()
+		.rotate()
 		.greyscale()
 		.png()
 
