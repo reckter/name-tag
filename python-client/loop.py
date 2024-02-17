@@ -63,6 +63,15 @@ def get_image(slide, frame, force = False):
     byte_save(key, response.content)
     return response.content
 
+byte_size = 128 * 296 / 8
+def get_whole_slide_show(slide, max)
+    connect_to_wifi()
+    print("downloading slide " + str(slide))
+    response = urequests.get("https://name-tag.reckt3r.rocks/api/slides/" + str(slide) + "/compact")
+    for i in range(max):
+        key = str(slide) + "-" + str(frame)
+        byte_save(key, response.content[i * byte_size: (i+1) * byte_size])
+
 def connect_to_wifi():
     if not display.isconnected():
         try:
@@ -148,8 +157,9 @@ def reset_screen():
 
 def download_all(slide, max):
     print("downloading all")
-    for i in range(max):
-        get_image(slide, i, True)
+    get_whole_slide_show(slide,max)
+    #for i in range(max):
+     #   get_image(slide, i, True)
 # ################
 # main
 # ################
@@ -220,7 +230,7 @@ try:
             byte_save("screen", image)
             changed = False
         #sleep(dif / 2)
-        badger2040.sleep_for(1)
+        badger2040.sleep_for(10)
         display.halt()
 except Exception as e:
     print(e)

@@ -27,7 +27,7 @@ export default async function GET(
 	const maxFrame = slide.areas
 		.map((it) => it.content.length)
 		.reduce((a, b) => Math.max(a, b), 0)
-	console.log("drawing frame")
+	console.log(`drawing ${maxFrame} frames`)
 	const pixel = [...new Array(maxFrame)].map((_, it) => drawFrame(slide, it))
 	console.log("packing")
 	const packed = pixel.map(toPackedPixel).flat(1)
