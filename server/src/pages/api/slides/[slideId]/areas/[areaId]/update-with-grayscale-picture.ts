@@ -60,6 +60,20 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 	const areaId = params.areaId as string
 	const chunks: never[] = []
 
+	const db = mongoClient.db(MONGO_DB)
+	const collection = db.collection("slides")
+
+	const slide = await collection.findOne<SlideShow>({ id: slideId })
+	if (slide == undefined) {
+		res.status(404).json({ error: "no slide found" })
+		return
+	}
+
+	const area = slide.areas.find((it) => it.id === areaId)
+	if (area == undefined) {
+		res.status(404).json({ error: "no area found" })
+		return
+	}
 	const { fields, files } = await formidablePromise(req, {
 		...formidableConfig,
 		// consume this, otherwise formidable tries to save the file to disk
@@ -69,7 +83,8 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 
 	const png = new PNG()
 	const scaled = sharp(fileData)
-		.resize(128, 128)
+		.resize(area.width, area.height)
+		.withMetadata()
 		.rotate()
 		.greyscale()
 		.png()
@@ -93,20 +108,6 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 
 	const instructions = grayScaleToDrawInstructions(pixel)
 
-	const db = mongoClient.db(MONGO_DB)
-	const collection = db.collection("slides")
-
-	const slide = await collection.findOne<SlideShow>({ id: slideId })
-	if (slide == undefined) {
-		res.status(404).json({ error: "no slide found" })
-		return
-	}
-
-	const area = slide.areas.find((it) => it.id === areaId)
-	if (area == undefined) {
-		res.status(404).json({ error: "no area found" })
-		return
-	}
 	area.content = instructions.map((it, index) => {
 		return {
 			type: AreaContentType.Picture,
