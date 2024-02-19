@@ -199,7 +199,7 @@ function ditherToSimpleColor(pixels: ReadonlyArray<ReadonlyArray<number>>): Read
                 errors[ry][rx] += value
             }
         }))
-        const simple = availableColors.indexOf(quantized)
+        const simple = availableColors.length - 1 - availableColors.indexOf(quantized)
         return simple
     }))
 }
