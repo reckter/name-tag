@@ -53,7 +53,7 @@ export default function UploadPicture() {
                         setMode("simple")
                     }
                 }}/>
-                <label for={"mode"}>Dither</label>
+                <label htmlFor={"mode"}>Dither</label>
             </div>
             <form onSubmit={onSubmit}>
                 <input

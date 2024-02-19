@@ -41,7 +41,7 @@ export async function POST(
 		)
 		.value()
 
-	const instructions = grayScaleToDrawInstructions(pixel)
+	const instructions = grayScaleToDrawInstructions(pixel, "dither")
 
 	const db = mongoClient.db(MONGO_DB)
 	const collection = db.collection("slides")
