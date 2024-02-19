@@ -106,8 +106,15 @@ function lcm(...arr: number[]): number {
 export function grayScaleToDrawInstructions(
     pixel: ReadonlyArray<ReadonlyArray<number>>,
 ): Array<Array<Array<boolean>>> {
-    // const simple = pixel.map((row) => row.map(toSimpleColor))
+    const base = pixel.map((row) => row.map(toSimpleColor))
     const simple = ditherToSimpleColor(pixel)
+    const diff = base.map((row, y) => row.map((it, x) => it - simple[y][x] + 16))
+    console.log("base")
+    drawSimplePixelToConsole(base)
+    console.log("simple")
+    drawSimplePixelToConsole(simple)
+    console.log("diff")
+    drawSimplePixelToConsole(diff)
 
     const drawCode = simple.map((row) => row.map(simpleColor16ToDrawArray))
 
@@ -129,26 +136,45 @@ const jjn = {
     ]
 }
 
-const availableColors = [
-    0,
-    10,
-    20,
-    30,
-    38,
-    45,
-    55,
-    70,
-    101,
-
-
-    221,
-    227,
-    230,
-    235,
-    240,
+const availableColors= [
+    255,
     250,
-    255
+    240,
+    235,
+    230,
+    227,
+    221,
+
+    101,
+    70,
+    55,
+    45,
+    38,
+    30,
+    20,
+    10,
+    0
 ]
+// const availableColors = [
+//     0,
+//     10,
+//     20,
+//     30,
+//     38,
+//     45,
+//     55,
+//     70,
+//     101,
+//
+//
+//     221,
+//     227,
+//     230,
+//     235,
+//     240,
+//     250,
+//     255
+// ]
 
 function quantizeToColor(pixel: number, correction: number): number {
     const projected = pixel + correction
@@ -166,16 +192,22 @@ function ditherToSimpleColor(pixels: ReadonlyArray<ReadonlyArray<number>>): Read
         const error = pixel - quantized
         const dither = jjn
         jjn.array.forEach((row, dy) => row.forEach((it, dx) => {
-            const value = error / dither.divisor * it
+            const value = (error / dither.divisor) * it
             const rx = x + dx - dither.offset
             const ry = y + dy
             if (rx >= 0 && rx < pixels[0].length && ry >= 0 && ry < pixels.length) {
                 errors[ry][rx] += value
             }
         }))
-        const simple = availableColors.length - 1 -availableColors.indexOf(quantized)
+        const simple = availableColors.indexOf(quantized)
         return simple
     }))
+}
+
+function drawSimplePixelToConsole(pixel: ReadonlyArray<ReadonlyArray<number>>) {
+    console.log(
+        pixel.map((row) => row.map((it) => it.toString(32)).join("")).join("\n"),
+    )
 }
 
 function toSimpleColor(grayScale: number): number {
@@ -193,6 +225,7 @@ function simpleColor16ToDrawArray(pixel: number): Array<boolean> {
 
         [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
         [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+
         [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
 
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
