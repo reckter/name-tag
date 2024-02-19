@@ -58,6 +58,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 	const params = req.query
 	const slideId = params.slideId as string
 	const areaId = params.areaId as string
+	const mode = params.mode as string
 	const chunks: never[] = []
 
 	const db = mongoClient.db(MONGO_DB)
@@ -106,7 +107,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 		.fill(0)
 		.map((_, x) => new Array(area.height).fill(0).map((_, y) => pixel[y][x]))
 
-	const instructions = grayScaleToDrawInstructions(rotated)
+	const instructions = grayScaleToDrawInstructions(rotated, mode as "simple" | "dither")
 
 	area.content = instructions.map((it, index) => {
 		return {

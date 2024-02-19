@@ -105,9 +105,15 @@ function lcm(...arr: number[]): number {
 
 export function grayScaleToDrawInstructions(
     pixel: ReadonlyArray<ReadonlyArray<number>>,
+    mode: "simple" | "dither",
 ): Array<Array<Array<boolean>>> {
     const base = pixel.map((row) => row.map(toSimpleColor))
-    const simple = ditherToSimpleColor(pixel)
+    const simple = (() => {
+        if (mode === "simple") {
+            return pixel.map((row) => row.map(toSimpleColor))
+        }
+        return ditherToSimpleColor(pixel)
+    })()
     const diff = base.map((row, y) => row.map((it, x) => it - simple[y][x] + 16))
     console.log("base")
     drawSimplePixelToConsole(base)
