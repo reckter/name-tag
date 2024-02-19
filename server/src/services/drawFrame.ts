@@ -184,8 +184,10 @@ const availableColors= [
 
 function quantizeToColor(pixel: number, correction: number): number {
     const projected = pixel + correction
+
+    const corrected = Math.round(255 * (1 + 1/Math.exp(5 - 1/30 * projected)))
     // @ts-ignore
-    const quantized = chain(availableColors).minBy((it) => Math.abs(it - projected)) ?? correction("no color found")
+    const quantized = chain(availableColors).minBy((it) => Math.abs(it - corrected)) ?? correction("no color found")
     return quantized
 
 }
