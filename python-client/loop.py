@@ -14,6 +14,8 @@ state = {
     "success": 0,
     "fails": 0,
     "size": 15,
+    "isCycling": False,
+    "cycle": 0,
     "chunkSize": 15
 }
 
@@ -193,37 +195,37 @@ try:
         display.keepalive()
         changed = False
 
-        dif = time() - last_changed
-        if time() - last_changed >= 60:
-            print(time())
-            changed = True
-            state["frame"] += state["chunkSize"]
 
         if badger2040.woken_by_rtc():
-            state["frame"] += state["chunkSize"]
-            if (state["frame"] >= state["size"]):
-                state["frame"] = 0
+            if state["isCycling"]:
+                state["cycle"] += 1
+                if state["cycle"] + 1 > len(state["availableSlides"]):
+                   state["cycle"] = 0
+                state["slide"] = state["availableSlides"][state["cycle"]]
             changed = True
-
+            
         if display.pressed(badger2040.BUTTON_A):
             state["slide"] = state["availableSlides"][0]
+            state["isCycling"] = False
             changed = True
+            
         if display.pressed(badger2040.BUTTON_B):
             state["slide"] = state["availableSlides"][1]
+            state["isCycling"] = False
             changed = True
-
+            
         if display.pressed(badger2040.BUTTON_C):
             state["slide"] = state["availableSlides"][2]
+            state["isCycling"] = False
             changed = True
-
+            
         if (display.pressed(badger2040.BUTTON_UP)):
             download_all(state["slide"], state["size"])
             changed = True
 
         if display.pressed(badger2040.BUTTON_DOWN):
-            state["frame"] += state["chunkSize"]
-            if (state["frame"] >= state["size"]):
-                state["frame"] = 0
+            state["isCycling"] = not state["isCycling"]
+            print("cycling:" + str(state["isCycling"]))
             changed = True
 
         if changed:
@@ -244,7 +246,10 @@ try:
             #byte_save("screen", image)
             changed = False
         #sleep(dif / 2)
-        badger2040.sleep_for(10)
+        if state["isCycling"]:
+            badger2040.sleep_for(1)
+        else:
+            badger2040.sleep_for(10)
         display.halt()
 except Exception as e:
     print(e)
