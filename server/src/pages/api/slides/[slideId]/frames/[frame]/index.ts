@@ -57,6 +57,7 @@ export default async function GET(
 	const slide = {
 		id: "slide",
 		name: "hello world",
+		user: "test",
 		chunkSize: 1,
 		areas: [areaText, areaImage],
 	}
