@@ -8,15 +8,9 @@ import os
 
 state = {
     "frame": 0,
-    "slide": "a52d839d-2e88-48f1-9355-a852b8f5111b",
-    "availableSlides": ["a52d839d-2e88-48f1-9355-a852b8f5111b", "31697112-f46a-4677-b3e1-1c056430e3c6", "54cb9f5a-dce5-4b33-945a-88a774f874ad"],
-    "tries": 0,
-    "success": 0,
-    "fails": 0,
-    "size": 15,
-    "isCycling": False,
-    "cycle": 0,
-    "chunkSize": 15
+    "slide": 0,
+    "user": "hannes",
+    "availableSlides": [],
 }
 
 badger_os.state_load("loop", state)
@@ -76,6 +70,12 @@ def get_whole_slide_show(slide, max):
     #    print("saving " + str(i))
     #    key = str(slide) + "-" + str(i)
     #    byte_save(key, response.content[i * byte_size: (i + 1) * byte_size])
+
+def download_slide_info():
+    connect_to_wifi()
+    print("downloading slide info")
+    response = urequests.get("https://name-tag.reckt3r.rocks/api/slides/listByUser?user=" + state["user"])
+    state["availableSlides"] = response.json()
 
 def connect_to_wifi():
     if not display.isconnected():
@@ -198,24 +198,27 @@ try:
 
         if badger2040.woken_by_rtc():
             if state["isCycling"]:
-                state["cycle"] += 1
-                if state["cycle"] + 1 > len(state["availableSlides"]):
-                   state["cycle"] = 0
-                state["slide"] = state["availableSlides"][state["cycle"]]
+                state["slide"] += 1
+                if state["slide"] + 1 > len(state["availableSlides"]):
+                   state["slide"] = 0
             changed = True
             
         if display.pressed(badger2040.BUTTON_A):
-            state["slide"] = state["availableSlides"][0]
-            state["isCycling"] = False
-            changed = True
-            
-        if display.pressed(badger2040.BUTTON_B):
-            state["slide"] = state["availableSlides"][1]
+            state["slide"] -= 1
+            if state["slide"] < 0:
+                state["slide"] = len(state["availableSlides"]) - 1
             state["isCycling"] = False
             changed = True
             
         if display.pressed(badger2040.BUTTON_C):
-            state["slide"] = state["availableSlides"][2]
+            state["slide"] += 1
+            if state["slide"] > len(state["availableSlides"]) - 1:
+                state["slide"] = 0
+            state["isCycling"] = False
+            changed = True
+
+        if display.pressed(badger2040.BUTTON_B):
+            state["slide"] = state["availableSlides"][1]
             state["isCycling"] = False
             changed = True
             
