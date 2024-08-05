@@ -11,6 +11,7 @@ state = {
     "slide": 0,
     "user": "hannes",
     "availableSlides": [],
+    "isCycling": False
 }
 
 badger_os.state_load("loop", state)
@@ -58,6 +59,10 @@ def get_image(slide, frame, force = False):
     response = urequests.get("https://name-tag.reckt3r.rocks/api/slides/" + str(slide) + "/frames/" + str(frame) + "/compact")
     byte_save(key, response.content)
     return response.content
+
+def ensure_slide_data(slide):
+    if not has_bytes(str(slide)):
+        get_whole_slide_show(slide, 0)
 
 byte_size = int(128 * 296 / 8)
 def get_whole_slide_show(slide, max):
@@ -202,14 +207,14 @@ try:
                 if state["slide"] + 1 > len(state["availableSlides"]):
                    state["slide"] = 0
             changed = True
-            
+
         if display.pressed(badger2040.BUTTON_A):
             state["slide"] -= 1
             if state["slide"] < 0:
                 state["slide"] = len(state["availableSlides"]) - 1
             state["isCycling"] = False
             changed = True
-            
+
         if display.pressed(badger2040.BUTTON_C):
             state["slide"] += 1
             if state["slide"] > len(state["availableSlides"]) - 1:
@@ -221,7 +226,7 @@ try:
             state["slide"] = state["availableSlides"][1]
             state["isCycling"] = False
             changed = True
-            
+
         if (display.pressed(badger2040.BUTTON_UP)):
             download_slide_info()
             download_all(state["slide"], state["size"])
@@ -233,13 +238,15 @@ try:
             changed = True
 
         if changed:
-            state["tries"] += 1
             print("updating image")
+            slide = state["availableSlides"][state["slide"]]
+
             last_changed = time()
             print("getting image!")
+            ensure_slide_data(slide["id"])
             display.set_update_speed(badger2040.UPDATE_TURBO)
-            all_bytes = byte_load(str(state["slide"]))
-            for i in range(state["chunkSize"]):
+            all_bytes = byte_load(slide["id"])
+            for i in range(slide["chunkSize"]):
                 #image = get_image(state["slide"], state["frame"] + i)
 
                 drawImage(all_bytes[i * byte_size: (i +1) * byte_size])
@@ -259,10 +266,12 @@ except Exception as e:
     print(e)
     print("halt")
 
-    state["fails"] += 1
     badger_os.state_save("loop", state)
     badger2040.sleep_for(1)
     display.halt()
+
+
+
 
 
 

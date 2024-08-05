@@ -3,7 +3,7 @@
 import {
 	drawFrameToCanvas,
 	HEIGHT,
-	unpackPixel,
+	decompress,
 	WIDTH,
 } from "@/src/services/drawFrame.client"
 import { useCallback, useEffect, useRef } from "react"
@@ -26,7 +26,7 @@ export function Preview({
 	const ref = useRef<HTMLCanvasElement>(null)
 
 	const draw = useCallback(() => {
-		const unpacked = unpackPixel(pixel)
+		const unpacked = decompress(pixel)
 		if (ref.current)
 			drawFrameToCanvas(unpacked, ref.current! as unknown as Canvas)
 	}, [pixel])
