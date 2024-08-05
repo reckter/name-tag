@@ -223,6 +223,7 @@ try:
             changed = True
             
         if (display.pressed(badger2040.BUTTON_UP)):
+            download_slide_info()
             download_all(state["slide"], state["size"])
             changed = True
 
