@@ -54,6 +54,7 @@ export async function GET(request: Request) {
 	const slide = {
 		id: "slide",
 		name: "hello world",
+		user: "test",
 		chunkSize: 1,
 		areas: [areaText, areaImage],
 	}
