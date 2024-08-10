@@ -239,7 +239,10 @@ try:
 
         if (display.pressed(badger2040.BUTTON_UP)):
             download_slide_info()
-            download_all(state["slide"])
+            if(len(state["availableSlides"]) - 1< state["slide"]):
+                state["slide"] = 0
+
+            download_all(state["availableSlides"][state["slide"]]["id"])
             changed = True
 
         if display.pressed(badger2040.BUTTON_DOWN):
@@ -280,11 +283,4 @@ except Exception as e:
     badger_os.state_save("loop", state)
     badger2040.sleep_for(1)
     display.halt()
-
-
-
-
-
-
-
 

@@ -14,27 +14,18 @@ export default async function PreviewFrame({
 	searchParams: { font?: string }
 }) {
 	const fonts = await fetch(`${baseUrl}/api/fonts`)
-	const response = await fetch(
-		`${baseUrl}/api/slides/${params.slide}/frames/${
-			params.frame
-		}/compressed?font=${searchParams.font ?? "Arial"}`,
-	)
 	const responsePacked = await fetch(
 		`${baseUrl}/api/slides/${params.slide}/frames/${
 			params.frame
 		}/packed?font=${searchParams.font ?? "Arial"}`,
 	)
-	const pixel = new Uint8Array(await response.arrayBuffer())
 	const pixelPacked = new Uint8Array(await responsePacked.arrayBuffer())
 	const pixelPackedArray = Array.from(pixelPacked)
-	const pixelArray = Array.from(pixel)
 	const frameNumber = parseInt(params.frame)
-	console.log(pixelArray.length, pixelPackedArray.length)
 	return (
 		<main className="flex min-h-screen flex-col items-center justify-between p-24">
-			{pixelArray.length} - {pixelPackedArray.length}
 			<Preview
-				pixel={pixelArray}
+				pixel={pixelPackedArray}
 				slide={params.slide}
 				frame={frameNumber}
 				font={searchParams.font}
