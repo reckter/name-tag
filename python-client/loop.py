@@ -257,7 +257,12 @@ try:
             last_changed = time()
             print("getting image!")
             ensure_slide_data(slide["id"])
-            display.set_update_speed(badger2040.UPDATE_TURBO)
+            if(slide["chunkSize"] > 1):
+                display.set_update_speed(badger2040.UPDATE_TURBO)
+            else:
+                display.set_update_speed(badger2040.UPDATE_NORMAL)
+
+
             all_bytes = byte_load(slide["id"])
             for i in range(slide["chunkSize"]):
                 #image = get_image(state["slide"], state["frame"] + i)

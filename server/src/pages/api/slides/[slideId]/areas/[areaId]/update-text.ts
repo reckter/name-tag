@@ -1,6 +1,6 @@
 import { grayScaleToDrawInstructions } from "@/src/services/drawFrame"
 import { MONGO_DB, mongoClient } from "@/src/services/mongo"
-import { AreaContentPicture, AreaContentType } from "@/src/types/area"
+import { AreaContentPicture, AreaContentText, AreaContentType } from "@/src/types/area"
 import { SlideShow } from "@/src/types/slideShow"
 import { chain } from "@opencreek/ext"
 import { NextApiRequest, NextApiResponse } from "next"
@@ -28,11 +28,14 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 		return
 	}
 
-	area.content = {
+	const content = ({
 		type: AreaContentType.Text,
 		id: "content",
-		text: text
-	} satisfies AreaContentPicture
+		text: text,
+		size: (area.content[0] as AreaContentText).size ?? 21
+	} satisfies AreaContentText)
+
+	area.content = [content]
 
 	await collection.updateOne({ id: slide.id }, { $set: { areas: slide.areas } })
 	const ret = await collection.findOne({ id: slide.id })
