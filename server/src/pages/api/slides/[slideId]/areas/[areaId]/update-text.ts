@@ -5,13 +5,14 @@ import { SlideShow } from "@/src/types/slideShow"
 import { chain } from "@opencreek/ext"
 import { NextApiRequest, NextApiResponse } from "next"
 
+
 export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method !== "POST") return res.status(404).end()
 
 	const params = req.query
 	const slideId = params.slideId as string
 	const areaId = params.areaId as string
-	const text = req.body.text
+	const text = JSON.parse(req.body).text
 
 	const db = mongoClient.db(MONGO_DB)
 	const collection = db.collection("slides")
