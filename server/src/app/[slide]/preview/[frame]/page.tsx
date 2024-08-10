@@ -17,7 +17,7 @@ export default async function PreviewFrame({
 	const responsePacked = await fetch(
 		`${baseUrl}/api/slides/${params.slide}/frames/${
 			params.frame
-		}/packed?font=${searchParams.font ?? "Arial"}`,
+		}/compact?font=${searchParams.font ?? "Arial"}`,
 	)
 	const pixelPacked = new Uint8Array(await responsePacked.arrayBuffer())
 	const pixelPackedArray = Array.from(pixelPacked)

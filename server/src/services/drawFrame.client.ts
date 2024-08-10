@@ -41,6 +41,8 @@ const packingLength = 8
 export function toPackedPixel(
 	pixel: ReadonlyArray<ReadonlyArray<boolean>>
 ): ReadonlyArray<number> {
+
+	console.log(`packing ${pixel.length}x${pixel[0].length}`)
 	const rotated = new Array(WIDTH)
 		.fill(0)
 		.map((_, x) => new Array(HEIGHT).fill(0).map((_, y) => pixel[y][x]))
