@@ -26,12 +26,13 @@ export default async function PreviewFrame({
 	)
 	const pixel = new Uint8Array(await response.arrayBuffer())
 	const pixelPacked = new Uint8Array(await responsePacked.arrayBuffer())
+	const pixelPackedArray = Array.from(pixelPacked)
 	const pixelArray = Array.from(pixel)
 	const frameNumber = parseInt(params.frame)
+	console.log(pixelArray.length, pixelPackedArray.length)
 	return (
 		<main className="flex min-h-screen flex-col items-center justify-between p-24">
-			{searchParams.font}
-			{pixel.length} - {pixelPacked.length}
+			{pixelArray.length} - {pixelPackedArray.length}
 			<Preview
 				pixel={pixelArray}
 				slide={params.slide}

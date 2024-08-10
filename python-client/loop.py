@@ -62,10 +62,10 @@ def get_image(slide, frame, force = False):
 
 def ensure_slide_data(slide):
     if not has_bytes(str(slide)):
-        get_whole_slide_show(slide, 0)
+        get_whole_slide_show(slide)
 
 byte_size = int(128 * 296 / 8)
-def get_whole_slide_show(slide, max):
+def get_whole_slide_show(slide):
     connect_to_wifi()
     print("downloading slide " + str(slide))
     response = urequests.get("https://name-tag.reckt3r.rocks/api/slides/" + str(slide) + "/frames/compact")
@@ -165,9 +165,15 @@ def reset_screen():
         display.display.rectangle(0,0,WIDTH,HEIGHT)
         display.update()
 
-def download_all(slide, max):
+def delete_cache():
+    for file in os.listdir("/state/bytes"):
+        os.remove("/state/bytes/" + file)
+
+
+
+def download_all(slide):
     print("downloading all")
-    get_whole_slide_show(slide,max)
+    get_whole_slide_show(slide)
     #for i in range(max):
      #   get_image(slide, i, True)
 # ################
@@ -222,14 +228,18 @@ try:
             state["isCycling"] = False
             changed = True
 
+
         if display.pressed(badger2040.BUTTON_B):
-            state["slide"] = state["availableSlides"][1]
+            state["slide"] = 0
             state["isCycling"] = False
             changed = True
 
+        if (display.pressed(badger2040.BUTTON_UP) and display.pressed(badger2040.BUTTON_DOWN)):
+            delete_cache()
+
         if (display.pressed(badger2040.BUTTON_UP)):
             download_slide_info()
-            download_all(state["slide"], state["size"])
+            download_all(state["slide"])
             changed = True
 
         if display.pressed(badger2040.BUTTON_DOWN):
@@ -264,11 +274,14 @@ try:
         display.halt()
 except Exception as e:
     print(e)
+    raise e
     print("halt")
 
     badger_os.state_save("loop", state)
     badger2040.sleep_for(1)
     display.halt()
+
+
 
 
 

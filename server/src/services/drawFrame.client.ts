@@ -99,7 +99,7 @@ export function compress(
 			runLength++
 		}
 
-		if (runLength > 7) {
+		if (runLength > 7 && false) {
 			const byte = runLength | (current ? 0x40 : 0)
 			compressed.push(byte)
 			i += runLength
