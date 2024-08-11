@@ -33,7 +33,8 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 		type: AreaContentType.Text,
 		id: "content",
 		text: text,
-		size: (area.content[0] as AreaContentText).size ?? 21
+		size: (area.content[0] as AreaContentText).size ?? 21,
+		font: (area.content[0] as AreaContentText).font ?? "5x7 practical"
 	} satisfies AreaContentText)
 
 	area.content = [content]

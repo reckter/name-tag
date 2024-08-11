@@ -270,6 +270,10 @@ try:
                 drawImage(all_bytes[i * byte_size: (i +1) * byte_size])
                 display.update()
 
+            display.set_update_speed(badger2040.UPDATE_TURBO)
+            if(slide["chunkSize"] == 1):
+                for i in range(10):
+                    display.update()
 
             badger_os.state_save("loop", state)
             #byte_save("screen", image)
@@ -288,4 +292,5 @@ except Exception as e:
     badger_os.state_save("loop", state)
     badger2040.sleep_for(1)
     display.halt()
+
 
